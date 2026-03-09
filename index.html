@@ -1,1115 +1,2230 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Our Memories</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Memories</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-    :root {
-      --coral: #FF6B6B;
-      --peach: #FFB347;
-      --sky: #74C0FC;
-      --mint: #96F2D7;
-      --lavender: #D0BFFF;
-      --warm-white: #FFF9F5;
-      --text-dark: #2D1B10;
-      --text-mid: #6B4C3B;
-      --card-bg: rgba(255,255,255,0.72);
-      --shadow: 0 8px 40px rgba(100,60,30,0.13);
-      --radius: 18px;
-      --nav-bg: rgba(255,249,245,0.85);
-      --section-odd: #FFF9F5;
-      --section-even-a: #EAF4FF;
-      --section-even-b: #F5EEFF;
-      --footer-bg: #2D1B10;
-      --footer-text: rgba(255,255,255,0.7);
-    }
+      :root {
+        --coral: #ff6b6b;
+        --peach: #ffb347;
+        --sky: #74c0fc;
+        --mint: #96f2d7;
+        --lavender: #d0bfff;
+        --warm-white: #fff9f5;
+        --text-dark: #2d1b10;
+        --text-mid: #6b4c3b;
+        --card-bg: rgba(255, 255, 255, 0.72);
+        --shadow: 0 8px 40px rgba(100, 60, 30, 0.13);
+        --radius: 18px;
+        --nav-bg: rgba(255, 249, 245, 0.85);
+        --section-odd: #fff9f5;
+        --section-even-a: #eaf4ff;
+        --section-even-b: #f5eeff;
+        --footer-bg: #2d1b10;
+        --footer-text: rgba(255, 255, 255, 0.7);
+      }
 
-    body.dark {
-      --warm-white: #141018;
-      --text-dark: #F0EBE8;
-      --text-mid: #B09990;
-      --card-bg: rgba(30,22,28,0.85);
-      --shadow: 0 8px 40px rgba(0,0,0,0.4);
-      --nav-bg: rgba(18,14,22,0.88);
-      --section-odd: #141018;
-      --section-even-a: #0F1520;
-      --section-even-b: #150F1E;
-      --footer-bg: #0A0810;
-      --footer-text: rgba(255,255,255,0.5);
-    }
+      body.dark {
+        --warm-white: #141018;
+        --text-dark: #f0ebe8;
+        --text-mid: #b09990;
+        --card-bg: rgba(30, 22, 28, 0.85);
+        --shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+        --nav-bg: rgba(18, 14, 22, 0.88);
+        --section-odd: #141018;
+        --section-even-a: #0f1520;
+        --section-even-b: #150f1e;
+        --footer-bg: #0a0810;
+        --footer-text: rgba(255, 255, 255, 0.5);
+      }
 
-    html { scroll-behavior: smooth; }
+      html {
+        scroll-behavior: smooth;
+      }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--warm-white);
-      color: var(--text-dark);
-      overflow-x: hidden;
-      transition: background 0.4s ease, color 0.4s ease;
-    }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--warm-white);
+        color: var(--text-dark);
+        overflow-x: hidden;
+        transition:
+          background 0.4s ease,
+          color 0.4s ease;
+      }
 
-    /* ── LOADING SCREEN ─────────────────────────────────── */
-    #loader {
-      position: fixed; inset: 0; z-index: 9999;
-      background: linear-gradient(135deg, #FF6B6B 0%, #FFB347 40%, #74C0FC 100%);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      transition: opacity 0.8s ease, visibility 0.8s ease;
-    }
-    #loader.hidden { opacity: 0; visibility: hidden; }
+      /* ── LOADING SCREEN ─────────────────────────────────── */
+      #loader {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: linear-gradient(
+          135deg,
+          #ff6b6b 0%,
+          #ffb347 40%,
+          #74c0fc 100%
+        );
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition:
+          opacity 0.8s ease,
+          visibility 0.8s ease;
+      }
+      #loader.hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
 
-    .loader-icon {
-      font-size: 4rem; margin-bottom: 1.5rem;
-      animation: heartbeat 1.4s ease-in-out infinite;
-    }
-    @keyframes heartbeat {
-      0%,100% { transform: scale(1); }
-      50% { transform: scale(1.18); }
-    }
+      .loader-icon {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+        animation: heartbeat 1.4s ease-in-out infinite;
+      }
+      @keyframes heartbeat {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.18);
+        }
+      }
 
-    .loader-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.8rem, 5vw, 3rem);
-      color: #fff;
-      letter-spacing: -0.02em;
-      margin-bottom: 2.5rem;
-      text-shadow: 0 2px 20px rgba(0,0,0,0.15);
-    }
+      .loader-title {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1.8rem, 5vw, 3rem);
+        color: #fff;
+        letter-spacing: -0.02em;
+        margin-bottom: 2.5rem;
+        text-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
+      }
 
-    .quote-wrap {
-      width: min(520px, 90vw);
-      text-align: center;
-      min-height: 3.5rem;
-      position: relative;
-    }
-    .loader-quote {
-      position: absolute; inset: 0;
-      font-size: 1.1rem; color: rgba(255,255,255,0.92);
-      font-style: italic; line-height: 1.6;
-      opacity: 0; transition: opacity 0.7s ease;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .loader-quote.active { opacity: 1; }
+      .quote-wrap {
+        width: min(520px, 90vw);
+        text-align: center;
+        min-height: 3.5rem;
+        position: relative;
+      }
+      .loader-quote {
+        position: absolute;
+        inset: 0;
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.92);
+        font-style: italic;
+        line-height: 1.6;
+        opacity: 0;
+        transition: opacity 0.7s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .loader-quote.active {
+        opacity: 1;
+      }
 
-    .loader-bar-wrap {
-      margin-top: 3rem;
-      width: min(300px, 80vw); height: 4px;
-      background: rgba(255,255,255,0.3);
-      border-radius: 99px; overflow: hidden;
-    }
-    .loader-bar {
-      height: 100%; width: 0;
-      background: #fff;
-      border-radius: 99px;
-      animation: loadprog 3.2s ease forwards;
-    }
-    @keyframes loadprog { to { width: 100%; } }
+      .loader-bar-wrap {
+        margin-top: 3rem;
+        width: min(300px, 80vw);
+        height: 4px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 99px;
+        overflow: hidden;
+      }
+      .loader-bar {
+        height: 100%;
+        width: 0;
+        background: #fff;
+        border-radius: 99px;
+        animation: loadprog 3.2s ease forwards;
+      }
+      @keyframes loadprog {
+        to {
+          width: 100%;
+        }
+      }
 
-    /* ── NAVBAR ─────────────────────────────────────────── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1rem 2rem;
-      background: var(--nav-bg);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(255,107,107,0.12);
-      transition: box-shadow 0.3s, background 0.4s;
-    }
-    nav.scrolled { box-shadow: 0 4px 24px rgba(100,60,30,0.10); }
+      /* ── NAVBAR ─────────────────────────────────────────── */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 2rem;
+        background: var(--nav-bg);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid rgba(255, 107, 107, 0.12);
+        transition:
+          box-shadow 0.3s,
+          background 0.4s;
+      }
+      nav.scrolled {
+        box-shadow: 0 4px 24px rgba(100, 60, 30, 0.1);
+      }
 
-    .nav-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.35rem; font-style: italic;
-      color: var(--coral);
-      text-decoration: none;
-    }
-    .nav-links { display: flex; gap: 0.3rem; }
-    .nav-links a {
-      text-decoration: none;
-      color: var(--text-mid);
-      font-size: 0.9rem; font-weight: 500;
-      padding: 0.45rem 0.9rem;
-      border-radius: 99px;
-      transition: background 0.2s, color 0.2s;
-    }
-    .nav-links a:hover {
-      background: var(--coral);
-      color: #fff;
-    }
+      .nav-logo {
+        font-family: "Playfair Display", serif;
+        font-size: 1.35rem;
+        font-style: italic;
+        color: var(--coral);
+        text-decoration: none;
+      }
+      .nav-links {
+        display: flex;
+        gap: 0.3rem;
+      }
+      .nav-links a {
+        text-decoration: none;
+        color: var(--text-mid);
+        font-size: 0.9rem;
+        font-weight: 500;
+        padding: 0.45rem 0.9rem;
+        border-radius: 99px;
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
+      .nav-links a:hover {
+        background: var(--coral);
+        color: #fff;
+      }
 
-    /* ── HERO ────────────────────────────────────────────── */
-    #home {
-      min-height: 100svh;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center;
-      padding: 7rem 2rem 4rem;
-      position: relative;
-      overflow: hidden;
-    }
+      /* ── CINEMATIC DROPDOWN ──────────────────────────────── */
+      .cine-wrap {
+        position: relative;
+      }
+      .cine-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        background: linear-gradient(135deg, var(--coral), var(--peach));
+        color: #fff;
+        font-size: 0.88rem;
+        font-weight: 500;
+        padding: 0.45rem 1rem;
+        border-radius: 99px;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 3px 14px rgba(255, 107, 107, 0.3);
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+        white-space: nowrap;
+        font-family: "DM Sans", sans-serif;
+      }
+      .cine-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(255, 107, 107, 0.45);
+      }
+      .cine-arrow {
+        display: inline-block;
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        font-size: 0.65rem;
+      }
+      .cine-wrap.open .cine-arrow {
+        transform: rotate(180deg);
+      }
 
-    .hero-bg {
-      position: absolute; inset: 0; z-index: 0;
-      background: linear-gradient(160deg, #FFF0EA 0%, #FFF9F5 40%, #EAF4FF 80%, #F5EEFF 100%);
-    }
-    /* floating blobs */
-    .blob {
-      position: absolute; border-radius: 50%;
-      filter: blur(70px); opacity: 0.45;
-      animation: float 8s ease-in-out infinite;
-    }
-    .blob1 { width: 420px; height: 420px; background: #FFB347; top: -80px; left: -100px; animation-delay: 0s; }
-    .blob2 { width: 320px; height: 320px; background: #FF6B6B; top: 30%; right: -80px; animation-delay: -3s; }
-    .blob3 { width: 280px; height: 280px; background: #74C0FC; bottom: 5%; left: 10%; animation-delay: -5s; }
-    .blob4 { width: 200px; height: 200px; background: #D0BFFF; bottom: 20%; right: 15%; animation-delay: -1.5s; }
-    @keyframes float {
-      0%,100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-30px) scale(1.05); }
-    }
+      .cine-dropdown {
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        background: rgba(255, 252, 250, 0.97);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 107, 107, 0.13);
+        border-radius: 18px;
+        padding: 0.5rem;
+        min-width: 215px;
+        box-shadow: 0 20px 60px rgba(100, 40, 20, 0.18);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px) scale(0.96);
+        transform-origin: top right;
+        transition:
+          opacity 0.22s ease,
+          transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+          visibility 0.22s;
+        z-index: 200;
+      }
+      body.dark .cine-dropdown {
+        background: rgba(22, 14, 30, 0.97);
+        border-color: rgba(255, 107, 107, 0.1);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+      }
+      .cine-wrap.open .cine-dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0) scale(1);
+      }
 
-    .hero-inner { position: relative; z-index: 1; }
+      .cine-item {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        width: 100%;
+        padding: 0.72rem 1rem;
+        border: none;
+        background: none;
+        cursor: pointer;
+        border-radius: 12px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--text-dark);
+        text-align: left;
+        transition:
+          background 0.18s,
+          transform 0.18s,
+          color 0.18s;
+      }
+      .cine-item:hover {
+        background: rgba(255, 107, 107, 0.09);
+        transform: translateX(4px);
+        color: var(--coral);
+      }
+      .ci-icon {
+        font-size: 1.1rem;
+        flex-shrink: 0;
+      }
+      .ci-label {
+        flex: 1;
+      }
+      .cine-divider {
+        height: 1px;
+        background: rgba(255, 107, 107, 0.1);
+        margin: 0.3rem 0.6rem;
+      }
 
-    .hero-emoji { font-size: 3.5rem; margin-bottom: 1rem; display: block; animation: popIn 0.8s cubic-bezier(.34,1.56,.64,1) 0.2s both; }
-    @keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+      /* ── SLIDESHOW BAR ───────────────────────────────────── */
+      #ss-bar {
+        position: fixed;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%) translateY(24px);
+        z-index: 1100;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: rgba(10, 6, 16, 0.82);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 99px;
+        padding: 0.55rem 1.3rem;
+        color: #fff;
+        font-size: 0.86rem;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity 0.3s,
+          visibility 0.3s,
+          transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        pointer-events: none;
+      }
+      #ss-bar.visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+        pointer-events: auto;
+      }
+      .ss-progress {
+        width: 110px;
+        height: 3px;
+        background: rgba(255, 255, 255, 0.18);
+        border-radius: 99px;
+        overflow: hidden;
+      }
+      .ss-fill {
+        height: 100%;
+        width: 0;
+        background: linear-gradient(90deg, var(--coral), var(--peach));
+        border-radius: 99px;
+      }
+      .ss-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1.1rem;
+        padding: 0.15rem 0.35rem;
+        border-radius: 6px;
+        line-height: 1;
+        transition:
+          color 0.18s,
+          background 0.18s;
+      }
+      .ss-btn:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.12);
+      }
+      .ss-label {
+        opacity: 0.65;
+        font-size: 0.78rem;
+        white-space: nowrap;
+      }
 
-    .hero-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(3rem, 8vw, 6.5rem);
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-      color: var(--text-dark);
-      animation: slideUp 0.9s cubic-bezier(.22,1,.36,1) 0.4s both;
-    }
-    .hero-title span { color: var(--coral); font-style: italic; }
+      /* ── CHAPTER OVERLAY ─────────────────────────────────── */
+      #chapter-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1080;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        opacity: 0;
+      }
+      #chapter-overlay.show {
+        animation: chapterFade 3s ease forwards;
+      }
+      @keyframes chapterFade {
+        0% {
+          opacity: 0;
+        }
+        16% {
+          opacity: 1;
+        }
+        72% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+      .chapter-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.4rem;
+        background: rgba(0, 0, 0, 0.68);
+        backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 22px;
+        padding: 1.8rem 3.5rem;
+      }
+      .chapter-eyebrow {
+        font-size: 0.72rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--peach);
+        font-weight: 600;
+      }
+      .chapter-title {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2rem, 6vw, 3.8rem);
+        color: #fff;
+        font-style: italic;
+      }
 
-    .hero-sub {
-      margin-top: 1.2rem;
-      font-size: clamp(1rem, 2.5vw, 1.25rem);
-      color: var(--text-mid);
-      max-width: 480px;
-      line-height: 1.65;
-      animation: slideUp 0.9s cubic-bezier(.22,1,.36,1) 0.6s both;
-    }
+      /* ── NIGHT THEATER ───────────────────────────────────── */
+      #theater-dim {
+        position: fixed;
+        inset: 0;
+        z-index: 950;
+        background: rgba(0, 0, 0, 0);
+        pointer-events: none;
+        transition: background 0.55s ease;
+      }
+      body.night-theater #theater-dim {
+        background: rgba(0, 0, 0, 0.55);
+        pointer-events: auto;
+        /* Film grain overlay */
+        background-image:
+          url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),
+          linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55));
+      }
+      body.night-theater #lightbox {
+        background: rgba(0, 0, 0, 0.98);
+      }
+      body.night-theater #lb-img {
+        box-shadow:
+          0 0 0 1px rgba(255, 107, 107, 0.04),
+          0 0 60px 12px rgba(255, 90, 90, 0.06),
+          0 0 120px 30px rgba(200, 100, 80, 0.04),
+          0 30px 100px rgba(0, 0, 0, 0.95);
+        border-radius: 10px;
+      }
+      body.night-theater #lb-video {
+        box-shadow:
+          0 0 80px 20px rgba(0, 0, 0, 0.9),
+          0 0 40px 8px rgba(120, 60, 200, 0.06);
+      }
+      /* Vignette on theater mode */
+      body.night-theater #lightbox::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 50%,
+          rgba(0, 0, 0, 0.7) 100%
+        );
+      }
 
-    .hero-btn {
-      margin-top: 2.5rem;
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.9rem 2.2rem;
-      border-radius: 99px;
-      background: linear-gradient(135deg, var(--coral), var(--peach));
-      color: #fff;
-      font-size: 1rem; font-weight: 500;
-      text-decoration: none;
-      border: none; cursor: pointer;
-      box-shadow: 0 8px 30px rgba(255,107,107,0.35);
-      transition: transform 0.2s, box-shadow 0.2s;
-      animation: slideUp 0.9s cubic-bezier(.22,1,.36,1) 0.8s both;
-    }
-    .hero-btn:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(255,107,107,0.45); }
-    .hero-btn .arrow { transition: transform 0.2s; }
-    .hero-btn:hover .arrow { transform: translateY(4px); }
+      /* ── HERO ────────────────────────────────────────────── */
+      #home {
+        min-height: 100svh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 7rem 2rem 4rem;
+        position: relative;
+        overflow: hidden;
+      }
 
-    @keyframes slideUp {
-      from { transform: translateY(40px); opacity: 0; }
-      to   { transform: translateY(0);    opacity: 1; }
-    }
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        background: linear-gradient(
+          160deg,
+          #fff0ea 0%,
+          #fff9f5 40%,
+          #eaf4ff 80%,
+          #f5eeff 100%
+        );
+      }
+      /* floating blobs */
+      .blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(70px);
+        opacity: 0.45;
+        animation: float 8s ease-in-out infinite;
+      }
+      .blob1 {
+        width: 420px;
+        height: 420px;
+        background: #ffb347;
+        top: -80px;
+        left: -100px;
+        animation-delay: 0s;
+      }
+      .blob2 {
+        width: 320px;
+        height: 320px;
+        background: #ff6b6b;
+        top: 30%;
+        right: -80px;
+        animation-delay: -3s;
+      }
+      .blob3 {
+        width: 280px;
+        height: 280px;
+        background: #74c0fc;
+        bottom: 5%;
+        left: 10%;
+        animation-delay: -5s;
+      }
+      .blob4 {
+        width: 200px;
+        height: 200px;
+        background: #d0bfff;
+        bottom: 20%;
+        right: 15%;
+        animation-delay: -1.5s;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-30px) scale(1.05);
+        }
+      }
 
-    .year-section {
-      padding: 5rem 2rem 6rem;
-      position: relative;
-      transition: background 0.4s;
-    }
-    .year-section:nth-child(odd) { background: var(--section-odd); }
-    .year-section:nth-child(even) {
-      background: linear-gradient(180deg, var(--section-even-a) 0%, var(--section-even-b) 100%);
-    }
+      .hero-inner {
+        position: relative;
+        z-index: 1;
+      }
 
-    .section-header {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-    .section-year-badge {
-      display: inline-block;
-      font-size: 0.78rem; font-weight: 500;
-      letter-spacing: 0.15em; text-transform: uppercase;
-      color: var(--coral);
-      background: rgba(255,107,107,0.10);
-      padding: 0.35rem 1.1rem;
-      border-radius: 99px;
-      margin-bottom: 0.9rem;
-    }
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.4rem, 5vw, 4rem);
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-    }
-    .section-count {
-      margin-top: 0.6rem;
-      font-size: 0.95rem; color: var(--text-mid);
-    }
+      .hero-emoji {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        display: block;
+        animation: popIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+      }
+      @keyframes popIn {
+        from {
+          transform: scale(0);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
 
-    /* ── GRID ────────────────────────────────────────────── */
-    .media-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 14px;
-      max-width: 1300px;
-      margin: 0 auto;
-    }
+      .hero-title {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(3rem, 8vw, 6.5rem);
+        line-height: 1.05;
+        letter-spacing: -0.03em;
+        color: var(--text-dark);
+        animation: slideUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both;
+      }
+      .hero-title span {
+        color: var(--coral);
+        font-style: italic;
+      }
 
-    .media-card {
-      position: relative;
-      border-radius: var(--radius);
-      overflow: hidden;
-      cursor: pointer;
-      background: #ddd;
-      aspect-ratio: 1;
-      box-shadow: var(--shadow);
-      transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s;
-      opacity: 0; transform: translateY(30px);
-      /* reveal via JS IntersectionObserver */
-    }
-    .media-card.visible {
-      animation: cardReveal 0.6s cubic-bezier(.22,1,.36,1) forwards;
-    }
-    @keyframes cardReveal {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .media-card:hover {
-      transform: scale(1.04) translateY(-4px);
-      box-shadow: 0 20px 60px rgba(100,60,30,0.20);
-      z-index: 2;
-    }
+      .hero-sub {
+        margin-top: 1.2rem;
+        font-size: clamp(1rem, 2.5vw, 1.25rem);
+        color: var(--text-mid);
+        max-width: 480px;
+        line-height: 1.65;
+        animation: slideUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.6s both;
+      }
 
-    .media-card img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.5s ease;
-    }
-    .media-card:hover img { transform: scale(1.08); }
+      .hero-btn {
+        margin-top: 2.5rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.9rem 2.2rem;
+        border-radius: 99px;
+        background: linear-gradient(135deg, var(--coral), var(--peach));
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 500;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 8px 30px rgba(255, 107, 107, 0.35);
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+        animation: slideUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.8s both;
+      }
+      .hero-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 14px 40px rgba(255, 107, 107, 0.45);
+      }
+      .hero-btn .arrow {
+        transition: transform 0.2s;
+      }
+      .hero-btn:hover .arrow {
+        transform: translateY(4px);
+      }
 
-    /* video card */
-    .media-card.video-card video {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: block;
-      pointer-events: none;
-    }
-    .video-overlay {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-      background: rgba(0,0,0,0.18);
-      transition: background 0.3s;
-    }
-    .media-card:hover .video-overlay { background: rgba(0,0,0,0.05); }
-    .play-btn {
-      width: 52px; height: 52px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.92);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.3rem;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
-      transition: transform 0.2s;
-    }
-    .media-card:hover .play-btn { transform: scale(1.1); }
+      @keyframes slideUp {
+        from {
+          transform: translateY(40px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
 
-    /* card shimmer on broken media */
-    .media-card::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, #f0e6df, #e8d5cc);
-      z-index: -1;
-    }
+      .year-section {
+        padding: 5rem 2rem 6rem;
+        position: relative;
+        transition: background 0.4s;
+      }
+      .year-section:nth-child(odd) {
+        background: var(--section-odd);
+      }
+      .year-section:nth-child(even) {
+        background: linear-gradient(
+          180deg,
+          var(--section-even-a) 0%,
+          var(--section-even-b) 100%
+        );
+      }
 
-    /* ── LIGHTBOX ────────────────────────────────────────── */
-    #lightbox {
-      position: fixed; inset: 0; z-index: 1000;
-      background: rgba(20,10,5,0.92);
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; visibility: hidden;
-      transition: opacity 0.4s, visibility 0.4s;
-      padding: 1.5rem;
-    }
-    #lightbox.open { opacity: 1; visibility: visible; }
+      .section-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+      .section-year-badge {
+        display: inline-block;
+        font-size: 0.78rem;
+        font-weight: 500;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--coral);
+        background: rgba(255, 107, 107, 0.1);
+        padding: 0.35rem 1.1rem;
+        border-radius: 99px;
+        margin-bottom: 0.9rem;
+      }
+      .section-title {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2.4rem, 5vw, 4rem);
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+      }
+      .section-count {
+        margin-top: 0.6rem;
+        font-size: 0.95rem;
+        color: var(--text-mid);
+      }
 
-    .lb-inner {
-      position: relative;
-      max-width: min(1000px, 96vw);
-      max-height: 90svh;
-      animation: lbPop 0.4s cubic-bezier(.34,1.56,.64,1);
-    }
-    @keyframes lbPop {
-      from { transform: scale(0.82); opacity: 0; }
-      to   { transform: scale(1);    opacity: 1; }
-    }
+      /* ── GRID ────────────────────────────────────────────── */
+      .media-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 14px;
+        max-width: 1300px;
+        margin: 0 auto;
+      }
 
-    #lb-img {
-      max-width: 100%; max-height: 86svh;
-      border-radius: 14px;
-      box-shadow: 0 30px 100px rgba(0,0,0,0.6);
-      display: block;
-    }
+      .media-card {
+        position: relative;
+        border-radius: var(--radius);
+        overflow: hidden;
+        cursor: pointer;
+        background: #ddd;
+        aspect-ratio: 1;
+        box-shadow: var(--shadow);
+        transition:
+          transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+          box-shadow 0.3s;
+        opacity: 0;
+        transform: translateY(30px);
+        /* reveal via JS IntersectionObserver */
+      }
+      .media-card.visible {
+        animation: cardReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      }
+      @keyframes cardReveal {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .media-card:hover {
+        transform: scale(1.04) translateY(-4px);
+        box-shadow: 0 20px 60px rgba(100, 60, 30, 0.2);
+        z-index: 2;
+      }
 
-    #lb-video {
-      max-width: 100%; max-height: 86svh;
-      border-radius: 14px;
-      box-shadow: 0 30px 100px rgba(0,0,0,0.6);
-      display: none;
-      outline: none;
-    }
+      .media-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.5s ease;
+      }
+      .media-card:hover img {
+        transform: scale(1.08);
+      }
 
-    .lb-close {
-      position: fixed; top: 1.2rem; right: 1.5rem;
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.15);
-      border: none; cursor: pointer;
-      color: #fff; font-size: 1.4rem;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s, transform 0.2s;
-    }
-    .lb-close:hover { background: rgba(255,107,107,0.6); transform: rotate(90deg); }
+      /* video card */
+      .media-card.video-card video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        pointer-events: none;
+      }
+      .video-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.18);
+        transition: background 0.3s;
+      }
+      .media-card:hover .video-overlay {
+        background: rgba(0, 0, 0, 0.05);
+      }
+      .play-btn {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.92);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+        transition: transform 0.2s;
+      }
+      .media-card:hover .play-btn {
+        transform: scale(1.1);
+      }
 
-    .lb-nav {
-      position: fixed; top: 50%; transform: translateY(-50%);
-      width: 48px; height: 48px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.14);
-      border: none; cursor: pointer;
-      color: #fff; font-size: 1.5rem;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s, transform 0.2s;
-    }
-    .lb-nav:hover { background: rgba(255,255,255,0.28); }
-    #lb-prev { left: 1rem; }
-    #lb-next { right: 1rem; }
-    #lb-prev:hover { transform: translateY(-50%) translateX(-3px); }
-    #lb-next:hover { transform: translateY(-50%) translateX(3px); }
+      /* card shimmer on broken media */
+      .media-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, #f0e6df, #e8d5cc);
+        z-index: -1;
+      }
 
-    .lb-counter {
-      position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
-      color: rgba(255,255,255,0.7); font-size: 0.85rem;
-      background: rgba(0,0,0,0.35); padding: 0.3rem 1rem; border-radius: 99px;
-    }
+      /* ── LIGHTBOX ────────────────────────────────────────── */
+      #lightbox {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        background: rgba(20, 10, 5, 0.92);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity 0.4s,
+          visibility 0.4s;
+        padding: 1.5rem;
+      }
+      #lightbox.open {
+        opacity: 1;
+        visibility: visible;
+      }
 
-    /* ── DIVIDER ─────────────────────────────────────────── */
-    .wave-divider {
-      display: block; width: 100%; height: 60px;
-      overflow: hidden; line-height: 0;
-    }
-    .wave-divider svg { width: 100%; height: 100%; }
+      .lb-inner {
+        position: relative;
+        max-width: min(1000px, 96vw);
+        max-height: 90svh;
+        animation: lbPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      @keyframes lbPop {
+        from {
+          transform: scale(0.82);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
 
-    /* ── FOOTER ──────────────────────────────────────────── */
-    footer {
-      background: var(--footer-bg);
-      color: var(--footer-text);
-      text-align: center;
-      padding: 2.5rem 2rem;
-      font-size: 0.95rem;
-      transition: background 0.4s;
-    }
-    footer span { color: var(--coral); }
+      #lb-img {
+        max-width: 100%;
+        max-height: 86svh;
+        border-radius: 14px;
+        box-shadow: 0 30px 100px rgba(0, 0, 0, 0.6);
+        display: block;
+      }
 
-    /* ── SCROLL HINT ─────────────────────────────────────── */
-    .scroll-hint {
-      margin-top: 3rem;
-      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
-      animation: slideUp 0.9s cubic-bezier(.22,1,.36,1) 1s both;
-    }
-    .scroll-hint span { font-size: 0.78rem; color: var(--text-mid); letter-spacing: 0.1em; text-transform: uppercase; }
-    .scroll-dot {
-      width: 6px; height: 22px;
-      border: 2px solid var(--coral);
-      border-radius: 99px;
-      position: relative; overflow: hidden;
-    }
-    .scroll-dot::after {
-      content: ''; position: absolute;
-      top: 2px; left: 50%; transform: translateX(-50%);
-      width: 2px; height: 6px;
-      background: var(--coral); border-radius: 99px;
-      animation: scrollDot 1.5s ease-in-out infinite;
-    }
-    @keyframes scrollDot { 0%,100%{top:2px} 50%{top:10px} }
+      #lb-video {
+        max-width: 100%;
+        max-height: 86svh;
+        border-radius: 14px;
+        box-shadow: 0 30px 100px rgba(0, 0, 0, 0.6);
+        display: none;
+        outline: none;
+      }
 
-    /* ── THEME TOGGLE ────────────────────────────────────── */
-    .theme-toggle {
-      display: flex; align-items: center; gap: 0.55rem;
-      margin-left: 0.5rem;
-    }
-    .theme-toggle-label {
-      font-size: 0.78rem; color: var(--text-mid);
-      user-select: none; transition: color 0.4s;
-      display: none; font-weight: 500;
-    }
-    @media (min-width: 500px) { .theme-toggle-label { display: block; } }
+      .lb-close {
+        position: fixed;
+        top: 1.2rem;
+        right: 1.5rem;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.15);
+        border: none;
+        cursor: pointer;
+        color: #fff;
+        font-size: 1.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          background 0.2s,
+          transform 0.2s;
+      }
+      .lb-close:hover {
+        background: rgba(255, 107, 107, 0.6);
+        transform: rotate(90deg);
+      }
 
-    .toggle-track {
-      position: relative;
-      width: 76px; height: 36px;
-      border-radius: 99px;
-      cursor: pointer; border: none; padding: 0;
-      outline: none; overflow: hidden;
-      flex-shrink: 0;
-      background: linear-gradient(to right, #7EC8E3, #FFD580);
-      box-shadow: 0 2px 12px rgba(255,180,60,0.3), inset 0 1px 0 rgba(255,255,255,0.35);
-      transition: background 0.7s ease, box-shadow 0.5s;
-    }
-    .toggle-track:focus-visible { outline: 2px solid var(--coral); outline-offset: 3px; }
-    body.dark .toggle-track {
-      background: linear-gradient(to right, #0a0a2e, #1c0f3f);
-      box-shadow: 0 2px 14px rgba(100,60,220,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
-    }
+      .lb-nav {
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.14);
+        border: none;
+        cursor: pointer;
+        color: #fff;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          background 0.2s,
+          transform 0.2s;
+      }
+      .lb-nav:hover {
+        background: rgba(255, 255, 255, 0.28);
+      }
+      #lb-prev {
+        left: 1rem;
+      }
+      #lb-next {
+        right: 1rem;
+      }
+      #lb-prev:hover {
+        transform: translateY(-50%) translateX(-3px);
+      }
+      #lb-next:hover {
+        transform: translateY(-50%) translateX(3px);
+      }
 
-    /* Scrolling sky layer inside track */
-    .track-sky {
-      position: absolute; inset: 0; overflow: hidden; border-radius: 99px;
-    }
-    .sky-cloud {
-      position: absolute; border-radius: 99px;
-      background: rgba(255,255,255,0.8);
-      transition: opacity 0.6s, transform 0.6s;
-    }
-    body.dark .sky-cloud { opacity: 0; transform: translateX(12px) scaleX(0.5); }
+      .lb-counter {
+        position: fixed;
+        bottom: 1.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.85rem;
+        background: rgba(0, 0, 0, 0.35);
+        padding: 0.3rem 1rem;
+        border-radius: 99px;
+      }
 
-    .sky-star {
-      position: absolute; border-radius: 50%;
-      background: #fff;
-      opacity: 0; transform: scale(0);
-      transition: opacity 0.5s, transform 0.5s;
-    }
-    body.dark .sky-star { opacity: 1; transform: scale(1); }
+      /* ── DIVIDER ─────────────────────────────────────────── */
+      .wave-divider {
+        display: block;
+        width: 100%;
+        height: 60px;
+        overflow: hidden;
+        line-height: 0;
+      }
+      .wave-divider svg {
+        width: 100%;
+        height: 100%;
+      }
 
-    /* Orb */
-    .toggle-thumb {
-      position: absolute;
-      top: 5px; left: 5px;
-      width: 26px; height: 26px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 38% 32%, #FFF176, #FFA500);
-      box-shadow: 0 0 0 3px rgba(255,210,60,0.22),
-                  0 0 20px 6px rgba(255,170,30,0.55);
-      transition: transform 0.6s cubic-bezier(.34,1.56,.64,1),
-                  background 0.5s, box-shadow 0.5s;
-      z-index: 2;
-    }
-    body.dark .toggle-thumb {
-      transform: translateX(40px);
-      background: radial-gradient(circle at 60% 38%, #F5ECD7, #C8B89A);
-      box-shadow: 0 0 0 3px rgba(180,160,255,0.18),
-                  0 0 16px 4px rgba(160,130,255,0.38),
-                  -5px -2px 0 3px #0a0a2e;
-    }
+      /* ── FOOTER ──────────────────────────────────────────── */
+      footer {
+        background: var(--footer-bg);
+        color: var(--footer-text);
+        text-align: center;
+        padding: 2.5rem 2rem;
+        font-size: 0.95rem;
+        transition: background 0.4s;
+      }
+      footer span {
+        color: var(--coral);
+      }
 
-    /* Sun rays ring around orb */
-    .ray-ring {
-      position: absolute; inset: -14px;
-      border-radius: 50%; pointer-events: none;
-    }
-    .ray {
-      position: absolute; top: 50%; left: 50%;
-      width: 2.5px; height: 9px;
-      margin-left: -1.25px;
-      background: rgba(255,225,60,0.8);
-      border-radius: 99px;
-      transform-origin: 50% calc(14px + 13px);
-      transition: opacity 0.4s, transform 0.5s;
-    }
-    body.dark .ray { opacity: 0; transform: scaleY(0) rotate(var(--r)); }
+      /* ── SCROLL HINT ─────────────────────────────────────── */
+      .scroll-hint {
+        margin-top: 3rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.4rem;
+        animation: slideUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1s both;
+      }
+      .scroll-hint span {
+        font-size: 0.78rem;
+        color: var(--text-mid);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .scroll-dot {
+        width: 6px;
+        height: 22px;
+        border: 2px solid var(--coral);
+        border-radius: 99px;
+        position: relative;
+        overflow: hidden;
+      }
+      .scroll-dot::after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 2px;
+        height: 6px;
+        background: var(--coral);
+        border-radius: 99px;
+        animation: scrollDot 1.5s ease-in-out infinite;
+      }
+      @keyframes scrollDot {
+        0%,
+        100% {
+          top: 2px;
+        }
+        50% {
+          top: 10px;
+        }
+      }
 
-    /* Moon craters */
-    .craters { position: absolute; inset: 0; border-radius: 50%; opacity: 0; transition: opacity 0.4s 0.25s; }
-    .crater  { position: absolute; border-radius: 50%; background: rgba(0,0,0,0.13); }
-    body.dark .craters { opacity: 1; }
+      /* ── THEME TOGGLE ────────────────────────────────────── */
+      .theme-toggle {
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+        margin-left: 0.5rem;
+      }
+      .theme-toggle-label {
+        font-size: 0.78rem;
+        color: var(--text-mid);
+        user-select: none;
+        transition: color 0.4s;
+        display: none;
+        font-weight: 500;
+      }
+      @media (min-width: 500px) {
+        .theme-toggle-label {
+          display: block;
+        }
+      }
 
-    /* ── CANVAS OVERLAY ──────────────────────────────────── */
-    #sky-canvas {
-      position: fixed; inset: 0; z-index: 9998;
-      pointer-events: none;
-      opacity: 0;
-    }
-    #sky-canvas.active { opacity: 1; }
+      .toggle-track {
+        position: relative;
+        width: 76px;
+        height: 36px;
+        border-radius: 99px;
+        cursor: pointer;
+        border: none;
+        padding: 0;
+        outline: none;
+        overflow: hidden;
+        flex-shrink: 0;
+        background: linear-gradient(to right, #7ec8e3, #ffd580);
+        box-shadow:
+          0 2px 12px rgba(255, 180, 60, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.35);
+        transition:
+          background 0.7s ease,
+          box-shadow 0.5s;
+      }
+      .toggle-track:focus-visible {
+        outline: 2px solid var(--coral);
+        outline-offset: 3px;
+      }
+      body.dark .toggle-track {
+        background: linear-gradient(to right, #0a0a2e, #1c0f3f);
+        box-shadow:
+          0 2px 14px rgba(100, 60, 220, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      }
 
-    /* hero bg dark override */
-    body.dark .hero-bg {
-      background: linear-gradient(160deg, #1a0f18 0%, #141018 40%, #0e1520 80%, #130e1e 100%);
-    }
-    body.dark .blob { opacity: 0.18; }
-    body.dark .section-title { color: var(--text-dark); }
+      /* Scrolling sky layer inside track */
+      .track-sky {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        border-radius: 99px;
+      }
+      .sky-cloud {
+        position: absolute;
+        border-radius: 99px;
+        background: rgba(255, 255, 255, 0.8);
+        transition:
+          opacity 0.6s,
+          transform 0.6s;
+      }
+      body.dark .sky-cloud {
+        opacity: 0;
+        transform: translateX(12px) scaleX(0.5);
+      }
 
-    #sky-canvas {
-      position: fixed; inset: 0; z-index: 9998;
-      pointer-events: none; display: none;
-    }
+      .sky-star {
+        position: absolute;
+        border-radius: 50%;
+        background: #fff;
+        opacity: 0;
+        transform: scale(0);
+        transition:
+          opacity 0.5s,
+          transform 0.5s;
+      }
+      body.dark .sky-star {
+        opacity: 1;
+        transform: scale(1);
+      }
 
-    /* ── RESPONSIVE ──────────────────────────────────────── */
-    @media (max-width: 600px) {
-      .media-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-      .nav-links a { padding: 0.4rem 0.6rem; font-size: 0.82rem; }
-      #lb-prev, #lb-next { display: none; }
-    }
-  </style>
-</head>
-<body>
+      /* Orb */
+      .toggle-thumb {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 38% 32%, #fff176, #ffa500);
+        box-shadow:
+          0 0 0 3px rgba(255, 210, 60, 0.22),
+          0 0 20px 6px rgba(255, 170, 30, 0.55);
+        transition:
+          transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+          background 0.5s,
+          box-shadow 0.5s;
+        z-index: 2;
+      }
+      body.dark .toggle-thumb {
+        transform: translateX(40px);
+        background: radial-gradient(circle at 60% 38%, #f5ecd7, #c8b89a);
+        box-shadow:
+          0 0 0 3px rgba(180, 160, 255, 0.18),
+          0 0 16px 4px rgba(160, 130, 255, 0.38),
+          -5px -2px 0 3px #0a0a2e;
+      }
 
-<!-- ── LOADER ─────────────────────────────────────────── -->
-<div id="loader">
-  <div class="loader-icon">🌸</div>
-  <div class="loader-title">Our Memories</div>
-  <div class="quote-wrap" id="quoteWrap"></div>
-  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
-</div>
+      /* Sun rays ring around orb */
+      .ray-ring {
+        position: absolute;
+        inset: -14px;
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      .ray {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 2.5px;
+        height: 9px;
+        margin-left: -1.25px;
+        background: rgba(255, 225, 60, 0.8);
+        border-radius: 99px;
+        transform-origin: 50% calc(14px + 13px);
+        transition:
+          opacity 0.4s,
+          transform 0.5s;
+      }
+      body.dark .ray {
+        opacity: 0;
+        transform: scaleY(0) rotate(var(--r));
+      }
 
-<!-- ── NAV ────────────────────────────────────────────── -->
-<nav id="navbar">
-  <a href="#home" class="nav-logo">Our Memories ✦</a>
-  <div class="nav-links">
-    <a href="#home">Home</a>
-    <a href="#y2023">2023</a>
-    <a href="#y2024">2024</a>
-    <a href="#y2025">2025</a>
-  </div>
-  <div class="theme-toggle">
-    <span class="theme-toggle-label" id="themeLabel">Light</span>
-    <button class="toggle-track" id="themeToggle" title="Toggle dark/light mode" aria-label="Toggle dark mode">
-      <div class="track-sky" id="trackSky"></div>
-      <div class="toggle-thumb" id="toggleThumb">
-        <div class="ray-ring" id="rayRing"></div>
-        <div class="craters">
-          <div class="crater" style="width:5px;height:5px;top:5px;left:5px;"></div>
-          <div class="crater" style="width:3px;height:3px;top:14px;left:11px;"></div>
-          <div class="crater" style="width:4px;height:4px;top:8px;left:15px;"></div>
+      /* Moon craters */
+      .craters {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        opacity: 0;
+        transition: opacity 0.4s 0.25s;
+      }
+      .crater {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.13);
+      }
+      body.dark .craters {
+        opacity: 1;
+      }
+
+      /* ── CANVAS OVERLAY ──────────────────────────────────── */
+      #sky-canvas {
+        position: fixed;
+        inset: 0;
+        z-index: 9998;
+        pointer-events: none;
+        display: none;
+      }
+
+      /* hero bg dark override */
+      body.dark .hero-bg {
+        background: linear-gradient(
+          160deg,
+          #1a0f18 0%,
+          #141018 40%,
+          #0e1520 80%,
+          #130e1e 100%
+        );
+      }
+      body.dark .blob {
+        opacity: 0.18;
+      }
+      body.dark .section-title {
+        color: var(--text-dark);
+      }
+
+      /* ── RESPONSIVE ──────────────────────────────────────── */
+      @media (max-width: 600px) {
+        .media-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 8px;
+        }
+        .nav-links a {
+          padding: 0.4rem 0.6rem;
+          font-size: 0.82rem;
+        }
+        #lb-prev,
+        #lb-next {
+          display: none;
+        }
+        .cine-btn {
+          font-size: 0.78rem;
+          padding: 0.4rem 0.75rem;
+        }
+        .cine-dropdown {
+          right: -0.5rem;
+          min-width: 190px;
+        }
+      }
+      /* Move counter up when ss-bar is visible */
+      body:has(#ss-bar.visible) .lb-counter {
+        bottom: 5.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ── LOADER ─────────────────────────────────────────── -->
+    <div id="loader">
+      <div class="loader-icon">🌸</div>
+      <div class="loader-title">Our Memories</div>
+      <div class="quote-wrap" id="quoteWrap"></div>
+      <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+    </div>
+
+    <!-- ── NAV ────────────────────────────────────────────── -->
+    <nav id="navbar">
+      <a href="#home" class="nav-logo">Our Memories ✦</a>
+      <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#y2023">2023</a>
+        <a href="#y2024">2024</a>
+        <a href="#y2025">2025</a>
+        <div class="cine-wrap" id="cineWrap">
+          <button
+            class="cine-btn"
+            id="cineBtn"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            🎬 Cinematic <span class="cine-arrow">▾</span>
+          </button>
+          <div class="cine-dropdown" id="cineDropdown" role="menu">
+            <button class="cine-item" id="cineSlideshow" role="menuitem">
+              <span class="ci-icon">🎬</span
+              ><span class="ci-label">Slideshow</span>
+            </button>
+            <button class="cine-item" id="cineStory" role="menuitem">
+              <span class="ci-icon">🎞</span
+              ><span class="ci-label">Story Mode</span>
+            </button>
+            <div class="cine-divider"></div>
+            <button class="cine-item" id="cineTheater" role="menuitem">
+              <span class="ci-icon">🌙</span
+              ><span class="ci-label">Night Theater</span>
+            </button>
+            <button class="cine-item" id="cineRandom" role="menuitem">
+              <span class="ci-icon">🎲</span
+              ><span class="ci-label">Random Memory</span>
+            </button>
+          </div>
         </div>
       </div>
-    </button>
-  </div>
-</nav>
+      <div class="theme-toggle">
+        <span class="theme-toggle-label" id="themeLabel">Light</span>
+        <button
+          class="toggle-track"
+          id="themeToggle"
+          title="Toggle dark/light mode"
+          aria-label="Toggle dark mode"
+        >
+          <div class="track-sky" id="trackSky"></div>
+          <div class="toggle-thumb" id="toggleThumb">
+            <div class="ray-ring" id="rayRing"></div>
+            <div class="craters">
+              <div
+                class="crater"
+                style="width: 5px; height: 5px; top: 5px; left: 5px"
+              ></div>
+              <div
+                class="crater"
+                style="width: 3px; height: 3px; top: 14px; left: 11px"
+              ></div>
+              <div
+                class="crater"
+                style="width: 4px; height: 4px; top: 8px; left: 15px"
+              ></div>
+            </div>
+          </div>
+        </button>
+      </div>
+    </nav>
 
-<!-- ── HERO ────────────────────────────────────────────── -->
-<section id="home">
-  <div class="hero-bg">
-    <div class="blob blob1"></div>
-    <div class="blob blob2"></div>
-    <div class="blob blob3"></div>
-    <div class="blob blob4"></div>
-  </div>
-  <div class="hero-inner">
-    <span class="hero-emoji">📸</span>
-    <h1 class="hero-title">Our<br><span>Memories</span></h1>
-    <p class="hero-sub">Every laugh, every late night, every moment we decided to make count — it's all right here.</p>
-    <a href="#y2023" class="hero-btn">
-      Browse the Gallery
-      <span class="arrow">↓</span>
-    </a>
-    <div class="scroll-hint">
-      <div class="scroll-dot"></div>
-      <span>scroll</span>
+    <!-- ── HERO ────────────────────────────────────────────── -->
+    <section id="home">
+      <div class="hero-bg">
+        <div class="blob blob1"></div>
+        <div class="blob blob2"></div>
+        <div class="blob blob3"></div>
+        <div class="blob blob4"></div>
+      </div>
+      <div class="hero-inner">
+        <span class="hero-emoji">📸</span>
+        <h1 class="hero-title">Our<br /><span>Memories</span></h1>
+        <p class="hero-sub">
+          Every laugh, every late night, every moment we decided to make count —
+          it's all right here.
+        </p>
+        <a href="#y2023" class="hero-btn">
+          Browse the Gallery
+          <span class="arrow">↓</span>
+        </a>
+        <div class="scroll-hint">
+          <div class="scroll-dot"></div>
+          <span>scroll</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 2023 ────────────────────────────────────────────── -->
+    <section class="year-section" id="y2023">
+      <div class="section-header">
+        <div class="section-year-badge">Chapter One</div>
+        <h2 class="section-title">2023</h2>
+        <p class="section-count">3 photos</p>
+      </div>
+      <div class="media-grid" id="grid2023"></div>
+    </section>
+
+    <!-- ── 2024 ────────────────────────────────────────────── -->
+    <section class="year-section" id="y2024">
+      <div class="section-header">
+        <div class="section-year-badge">Chapter Two</div>
+        <h2 class="section-title">2024</h2>
+        <p class="section-count">13 photos · 6 videos</p>
+      </div>
+      <div class="media-grid" id="grid2024"></div>
+    </section>
+
+    <!-- ── 2025 ────────────────────────────────────────────── -->
+    <section class="year-section" id="y2025">
+      <div class="section-header">
+        <div class="section-year-badge">Chapter Three</div>
+        <h2 class="section-title">2025</h2>
+        <p class="section-count">10 photos · 3 videos</p>
+      </div>
+      <div class="media-grid" id="grid2025"></div>
+    </section>
+
+    <!-- ── FOOTER ──────────────────────────────────────────── -->
+    <footer>
+      <p>Built for the memories that <span>never fade</span>. 💛</p>
+    </footer>
+
+    <!-- ── SLIDESHOW BAR ──────────────────────────────────── -->
+    <div id="ss-bar">
+      <button class="ss-btn" id="ss-playpause" title="Pause/Resume">⏸</button>
+      <div class="ss-progress"><div class="ss-fill" id="ss-fill"></div></div>
+      <span class="ss-label" id="ss-label">Slideshow</span>
+      <button class="ss-btn" id="ss-stop" title="Stop Slideshow">✕</button>
     </div>
-  </div>
-</section>
 
-<!-- ── 2023 ────────────────────────────────────────────── -->
-<section class="year-section" id="y2023">
-  <div class="section-header">
-    <div class="section-year-badge">Chapter One</div>
-    <h2 class="section-title">2023</h2>
-    <p class="section-count">3 photos</p>
-  </div>
-  <div class="media-grid" id="grid2023"></div>
-</section>
+    <!-- ── CHAPTER OVERLAY ───────────────────────────────── -->
+    <div id="chapter-overlay">
+      <div class="chapter-card">
+        <div class="chapter-eyebrow">Now Entering</div>
+        <div class="chapter-title" id="chapter-title">Chapter 2023</div>
+      </div>
+    </div>
 
-<!-- ── 2024 ────────────────────────────────────────────── -->
-<section class="year-section" id="y2024">
-  <div class="section-header">
-    <div class="section-year-badge">Chapter Two</div>
-    <h2 class="section-title">2024</h2>
-    <p class="section-count">13 photos · 6 videos</p>
-  </div>
-  <div class="media-grid" id="grid2024"></div>
-</section>
+    <!-- ── THEATER DIM ───────────────────────────────────── -->
+    <div id="theater-dim"></div>
 
-<!-- ── 2025 ────────────────────────────────────────────── -->
-<section class="year-section" id="y2025">
-  <div class="section-header">
-    <div class="section-year-badge">Chapter Three</div>
-    <h2 class="section-title">2025</h2>
-    <p class="section-count">10 photos · 3 videos</p>
-  </div>
-  <div class="media-grid" id="grid2025"></div>
-</section>
+    <!-- ── LIGHTBOX ────────────────────────────────────────── -->
+    <div id="lightbox">
+      <div class="lb-inner">
+        <img id="lb-img" src="" alt="Memory" />
+        <video id="lb-video" controls playsinline></video>
+      </div>
+      <button class="lb-close" id="lb-close" title="Close">✕</button>
+      <button class="lb-nav" id="lb-prev" title="Previous">‹</button>
+      <button class="lb-nav" id="lb-next" title="Next">›</button>
+      <div class="lb-counter" id="lb-counter"></div>
+    </div>
 
-<!-- ── FOOTER ──────────────────────────────────────────── -->
-<footer>
-  <p>Built for the memories that <span>never fade</span>. 💛</p>
-</footer>
+    <canvas id="sky-canvas"></canvas>
 
-<!-- ── LIGHTBOX ────────────────────────────────────────── -->
-<div id="lightbox">
-  <div class="lb-inner">
-    <img id="lb-img" src="" alt="Memory" />
-    <video id="lb-video" controls playsinline></video>
-  </div>
-  <button class="lb-close" id="lb-close" title="Close">✕</button>
-  <button class="lb-nav" id="lb-prev" title="Previous">‹</button>
-  <button class="lb-nav" id="lb-next" title="Next">›</button>
-  <div class="lb-counter" id="lb-counter"></div>
-</div>
+    <script>
+      // ── DATA ──────────────────────────────────────────────
+      const media = {
+        2023: {
+          images: [
+            "media/242023.jpeg",
+            "media/252023.jpeg",
+            "media/262023.jpeg",
+          ],
+          videos: [],
+        },
+        2024: {
+          images: [
+            "media/102024.jpeg",
+            "media/122024.jpeg",
+            "media/132024.jpeg",
+            "media/142024.jpeg",
+            "media/152024.jpeg",
+            "media/162024.jpeg",
+            "media/172024.jpeg",
+            "media/182024.jpeg",
+            "media/192024.jpeg",
+            "media/202024.jpeg",
+            "media/212024.jpeg",
+            "media/222024.jpeg",
+            "media/232024.jpeg",
+          ],
+          videos: [
+            "media/312024.mp4",
+            "media/322024.mp4",
+            "media/332024.mp4",
+            "media/342024.mp4",
+            "media/352024.mp4",
+            "media/362024.mp4",
+          ],
+        },
+        2025: {
+          images: [
+            "media/12025.jpeg",
+            "media/22025.jpeg",
+            "media/32025.jpeg",
+            "media/42025.jpeg",
+            "media/52025.jpeg",
+            "media/62025.jpeg",
+            "media/72025.jpeg",
+            "media/82025.jpeg",
+            "media/92025.jpeg",
+            "media/112025.jpeg",
+          ],
+          videos: ["media/272025.mp4", "media/282025.mp4", "media/292025.mp4"],
+        },
+      };
 
-<canvas id="sky-canvas"></canvas>
-
-<script>
-// ── DATA ──────────────────────────────────────────────
-const media = {
-  2023: {
-    images: ['media/242023.jpeg','media/252023.jpeg','media/262023.jpeg'],
-    videos: []
-  },
-  2024: {
-    images: ['media/102024.jpeg','media/122024.jpeg','media/132024.jpeg','media/142024.jpeg',
-             'media/152024.jpeg','media/162024.jpeg','media/172024.jpeg','media/182024.jpeg',
-             'media/192024.jpeg','media/202024.jpeg','media/212024.jpeg','media/222024.jpeg',
-             'media/232024.jpeg'],
-    videos: ['media/312024.mp4','media/322024.mp4','media/332024.mp4',
-             'media/342024.mp4','media/352024.mp4','media/362024.mp4']
-  },
-  2025: {
-    images: ['media/12025.jpeg','media/22025.jpeg','media/32025.jpeg','media/42025.jpeg',
-             'media/52025.jpeg','media/62025.jpeg','media/72025.jpeg','media/82025.jpeg',
-             'media/92025.jpeg','media/112025.jpeg'],
-    videos: ['media/272025.mp4','media/282025.mp4','media/292025.mp4']
-  }
-};
-
-// Flatten all items per year for lightbox navigation
-const allItems = {};
-[2023,2024,2025].forEach(y => {
-  allItems[y] = [
-    ...media[y].images.map(src => ({ src, type: 'image' })),
-    ...media[y].videos.map(src => ({ src, type: 'video' }))
-  ];
-});
-
-// ── LOADER ────────────────────────────────────────────
-const quotes = [
-  "Some friendships turn into family.",
-  "Memories fade. Legends stay.",
-  "Built different. Together.",
-  "The best nights leave no photographs.",
-  "Not all treasure is found — some is made.",
-  "You were there. That's enough."
-];
-
-const loader = document.getElementById('loader');
-const quoteWrap = document.getElementById('quoteWrap');
-
-// Build quote elements
-quotes.forEach((q, i) => {
-  const el = document.createElement('div');
-  el.className = 'loader-quote' + (i === 0 ? ' active' : '');
-  el.textContent = '"' + q + '"';
-  quoteWrap.appendChild(el);
-});
-
-let qi = 0;
-const quoteEls = quoteWrap.querySelectorAll('.loader-quote');
-const quoteInterval = setInterval(() => {
-  quoteEls[qi].classList.remove('active');
-  qi = (qi + 1) % quotes.length;
-  quoteEls[qi].classList.add('active');
-}, 1100);
-
-const showLoader = !sessionStorage.getItem('visited');
-if (showLoader) {
-  sessionStorage.setItem('visited', '1');
-  document.body.style.overflow = 'hidden';
-  setTimeout(() => {
-    clearInterval(quoteInterval);
-    loader.classList.add('hidden');
-    document.body.style.overflow = '';
-  }, 3400);
-} else {
-  loader.classList.add('hidden');
-}
-
-// ── BUILD GRIDS ───────────────────────────────────────
-function buildGrid(year) {
-  const grid = document.getElementById('grid' + year);
-  const items = allItems[year];
-
-  items.forEach((item, idx) => {
-    const card = document.createElement('div');
-    card.className = 'media-card' + (item.type === 'video' ? ' video-card' : '');
-    card.dataset.year = year;
-    card.dataset.idx = idx;
-
-    if (item.type === 'image') {
-      const img = document.createElement('img');
-      img.src = item.src;
-      img.alt = 'Memory ' + (idx + 1);
-      img.loading = 'lazy';
-      card.appendChild(img);
-    } else {
-      const vid = document.createElement('video');
-      vid.src = item.src;
-      vid.preload = 'metadata';
-      vid.muted = true;
-      vid.playsInline = true;
-      // show first frame
-      vid.addEventListener('loadedmetadata', () => { vid.currentTime = 0.5; });
-      card.appendChild(vid);
-
-      const ov = document.createElement('div');
-      ov.className = 'video-overlay';
-      ov.innerHTML = '<div class="play-btn">▶</div>';
-      card.appendChild(ov);
-    }
-
-    card.addEventListener('click', () => openLightbox(year, idx));
-    grid.appendChild(card);
-  });
-}
-
-[2023,2024,2025].forEach(buildGrid);
-
-// ── SCROLL REVEAL ─────────────────────────────────────
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach((e, i) => {
-    if (e.isIntersecting) {
-      // stagger cards
-      const cards = [...e.target.parentElement.querySelectorAll('.media-card:not(.visible)')];
-      cards.forEach((c, ci) => {
-        setTimeout(() => c.classList.add('visible'), ci * 60);
+      // Flatten all items per year for lightbox navigation
+      const allItems = {};
+      [2023, 2024, 2025].forEach((y) => {
+        allItems[y] = [
+          ...media[y].images.map((src) => ({ src, type: "image" })),
+          ...media[y].videos.map((src) => ({ src, type: "video" })),
+        ];
       });
-    }
-  });
-}, { threshold: 0.05 });
 
-document.querySelectorAll('.media-grid').forEach(g => revealObserver.observe(g));
+      // ── LOADER ────────────────────────────────────────────
+      const quotes = [
+        "Some friendships turn into family.",
+        "Memories fade. Legends stay.",
+        "Built different. Together.",
+        "The best nights leave no photographs.",
+        "Not all treasure is found — some is made.",
+        "You were there. That's enough.",
+      ];
 
-// ── NAVBAR SCROLL ─────────────────────────────────────
-window.addEventListener('scroll', () => {
-  document.getElementById('navbar').classList.toggle('scrolled', scrollY > 30);
-});
+      const loader = document.getElementById("loader");
+      const quoteWrap = document.getElementById("quoteWrap");
 
-// ── LIGHTBOX ──────────────────────────────────────────
-const lightbox = document.getElementById('lightbox');
-const lbImg    = document.getElementById('lb-img');
-const lbVideo  = document.getElementById('lb-video');
-const lbClose  = document.getElementById('lb-close');
-const lbPrev   = document.getElementById('lb-prev');
-const lbNext   = document.getElementById('lb-next');
-const lbCounter= document.getElementById('lb-counter');
-
-let curYear = null, curIdx = 0;
-
-function openLightbox(year, idx) {
-  curYear = year; curIdx = idx;
-  renderLightbox();
-  lightbox.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeLightbox() {
-  lightbox.classList.remove('open');
-  document.body.style.overflow = '';
-  lbVideo.pause();
-  lbVideo.src = '';
-  lbVideo.style.display = 'none';
-  lbImg.style.display = 'block';
-}
-
-function renderLightbox() {
-  const item = allItems[curYear][curIdx];
-  const total = allItems[curYear].length;
-  lbCounter.textContent = (curIdx + 1) + ' / ' + total;
-
-  if (item.type === 'image') {
-    lbVideo.pause(); lbVideo.style.display = 'none'; lbVideo.src = '';
-    lbImg.style.display = 'block';
-    lbImg.src = item.src;
-  } else {
-    lbImg.style.display = 'none';
-    lbVideo.style.display = 'block';
-    lbVideo.src = item.src;
-    lbVideo.load();
-    lbVideo.play().catch(() => {});
-  }
-}
-
-lbClose.addEventListener('click', closeLightbox);
-lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
-
-lbPrev.addEventListener('click', () => {
-  curIdx = (curIdx - 1 + allItems[curYear].length) % allItems[curYear].length;
-  renderLightbox();
-});
-lbNext.addEventListener('click', () => {
-  curIdx = (curIdx + 1) % allItems[curYear].length;
-  renderLightbox();
-});
-
-document.addEventListener('keydown', e => {
-  if (!lightbox.classList.contains('open')) return;
-  if (e.key === 'Escape') closeLightbox();
-  if (e.key === 'ArrowLeft') lbPrev.click();
-  if (e.key === 'ArrowRight') lbNext.click();
-});
-
-// ── TOGGLE SETUP ─────────────────────────────────────
-const themeToggle = document.getElementById('themeToggle');
-const themeLabel  = document.getElementById('themeLabel');
-const rayRing     = document.getElementById('rayRing');
-const trackSky    = document.getElementById('trackSky');
-
-// Build sun rays
-const RAY_COUNT = 8;
-for (let i = 0; i < RAY_COUNT; i++) {
-  const r = document.createElement('div');
-  r.className = 'ray';
-  const angle = (360 / RAY_COUNT) * i;
-  r.style.cssText = `--r:${angle}deg; transform: rotate(${angle}deg) translateY(-20px) scaleY(1);`;
-  rayRing.appendChild(r);
-}
-
-// Build clouds in track
-const cloudData = [{w:16,h:10,t:8,l:6},{w:12,h:9,t:12,l:16},{w:9,h:7,t:9,l:2}];
-cloudData.forEach(c => {
-  const d = document.createElement('div');
-  d.className = 'sky-cloud';
-  d.style.cssText = `width:${c.w}px;height:${c.h}px;top:${c.t}px;left:${c.l}px;border-radius:99px;`;
-  trackSky.appendChild(d);
-});
-
-// Build star dots in track
-const starDots = [{w:2,h:2,t:7,l:52,delay:'0.1s'},{w:1.5,h:1.5,t:14,l:58,delay:'0.25s'},{w:1,h:1,t:5,l:62,delay:'0.15s'},{w:2,h:2,t:18,l:48,delay:'0.3s'}];
-starDots.forEach(s => {
-  const d = document.createElement('div');
-  d.className = 'sky-star';
-  d.style.cssText = `width:${s.w}px;height:${s.h}px;top:${s.t}px;left:${s.l}px;transition-delay:${s.delay};`;
-  trackSky.appendChild(d);
-});
-
-// ── CANVAS SKY ANIMATION ──────────────────────────────
-const canvas = document.getElementById('sky-canvas');
-const ctx    = canvas.getContext('2d');
-let animId   = null;
-let animBusy = false;
-
-function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
-function easeInOut(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
-function easeOut(t)   { return 1 - Math.pow(1-t, 3); }
-function lerpColor(a, b, t) { return a.map((v,i) => Math.round(v + (b[i]-v)*t)); }
-
-function runSkyAnimation(toDark, btnRect, onMidpoint, onDone) {
-  resizeCanvas();
-  canvas.style.display = 'block'; canvas.style.opacity = '1';
-  const W = canvas.width, H = canvas.height;
-  const cx = btnRect.left + btnRect.width/2;
-  const cy = btnRect.top  + btnRect.height/2;
-  const maxR = Math.hypot(Math.max(cx, W-cx), Math.max(cy, H-cy)) * 1.05;
-
-  const dayColors   = [[255,230,160],[255,140,80],[120,190,230]];
-  const nightColors = [[8,6,24],     [18,10,42],  [4,3,18]];
-
-  const stars = Array.from({length:200}, () => ({
-    x: Math.random()*W, y: Math.random()*H,
-    r: Math.random()*1.8+0.3,
-    tw: Math.random()*Math.PI*2,
-    sp: Math.random()*2+1
-  }));
-
-  const shoots = Array.from({length: toDark ? 6 : 2}, (_,i) => ({
-    x: Math.random()*W*0.7+W*0.1, y: Math.random()*H*0.35,
-    len: Math.random()*100+60,
-    angle: Math.PI/4 + (Math.random()-0.5)*0.3,
-    prog: -(i*0.2), w: Math.random()*1.5+0.6
-  }));
-
-  const auroras = toDark ? Array.from({length:4}, (_,i) => ({
-    y: H*0.08 + i*(H*0.1),
-    wid: W*0.35 + Math.random()*W*0.4,
-    x: Math.random()*W*0.4,
-    hue: [155, 270, 190, 320][i],
-    ph: Math.random()*Math.PI*2
-  })) : [];
-
-  const orbR  = toDark ? 42 : 52;
-  const orbSX = toDark ? W*0.72 : W*0.28;
-  const orbEX = toDark ? W*0.28 : W*0.72;
-  const orbAY = H * 0.30;
-
-  const TOTAL = 1700;
-  let start = null, midFired = false;
-
-  function draw(ts) {
-    if (!start) start = ts;
-    const rawT = Math.min((ts - start) / TOTAL, 1);
-    const t    = easeInOut(rawT);
-    if (!midFired && rawT >= 0.44) { midFired = true; onMidpoint(); }
-
-    ctx.clearRect(0,0,W,H);
-
-    // Sky gradient
-    const from = toDark ? dayColors : nightColors;
-    const to   = toDark ? nightColors : dayColors;
-    const grad = ctx.createLinearGradient(0,0,0,H);
-    [[0,0],[0.45,1],[1,2]].forEach(([stop,ci]) => {
-      const c = lerpColor(from[ci], to[ci], t);
-      grad.addColorStop(stop, `rgb(${c})`);
-    });
-    ctx.fillStyle = grad; ctx.fillRect(0,0,W,H);
-
-    // Stars
-    stars.forEach(s => {
-      const alpha = toDark
-        ? Math.max(0,(t-0.28)/0.72) * (0.55 + 0.45*Math.sin(s.tw + ts*0.001*s.sp))
-        : Math.max(0,(1-t*1.4)*0.8) * (0.55 + 0.45*Math.sin(s.tw + ts*0.001*s.sp));
-      if (alpha <= 0) return;
-      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
-      ctx.fillStyle = `rgba(255,255,255,${alpha})`; ctx.fill();
-    });
-
-    // Aurora
-    if (toDark && t > 0.48) {
-      const aA = easeOut((t-0.48)/0.52) * 0.20;
-      auroras.forEach(a => {
-        const wy = a.y + Math.sin(ts*0.0005+a.ph)*22;
-        const ag = ctx.createLinearGradient(a.x,0,a.x+a.wid,0);
-        ag.addColorStop(0, `hsla(${a.hue},100%,65%,0)`);
-        ag.addColorStop(0.3, `hsla(${a.hue},100%,65%,${aA})`);
-        ag.addColorStop(0.7, `hsla(${a.hue+40},100%,70%,${aA*0.7})`);
-        ag.addColorStop(1, `hsla(${a.hue},100%,65%,0)`);
-        ctx.beginPath();
-        ctx.ellipse(a.x+a.wid/2, wy, a.wid/2, 32+Math.sin(ts*0.0003)*12, 0, 0, Math.PI*2);
-        ctx.fillStyle = ag; ctx.fill();
+      // Build quote elements
+      quotes.forEach((q, i) => {
+        const el = document.createElement("div");
+        el.className = "loader-quote" + (i === 0 ? " active" : "");
+        el.textContent = '"' + q + '"';
+        quoteWrap.appendChild(el);
       });
-    }
 
-    // Orb arc
-    const ot = easeOut(t);
-    const ox = orbSX + (orbEX - orbSX) * ot;
-    const oy = orbAY - Math.sin(ot * Math.PI) * H * 0.24;
+      let qi = 0;
+      const quoteEls = quoteWrap.querySelectorAll(".loader-quote");
+      const quoteInterval = setInterval(() => {
+        quoteEls[qi].classList.remove("active");
+        qi = (qi + 1) % quotes.length;
+        quoteEls[qi].classList.add("active");
+      }, 1100);
 
-    // Glow halo
-    const glowColor = toDark ? `rgba(220,200,255,${easeOut(t)*0.4})` : `rgba(255,200,60,${easeOut(t)*0.5})`;
-    const halo = ctx.createRadialGradient(ox,oy,orbR*0.6, ox,oy,orbR*2.5);
-    halo.addColorStop(0, glowColor); halo.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.beginPath(); ctx.arc(ox,oy,orbR*2.5,0,Math.PI*2);
-    ctx.fillStyle = halo; ctx.fill();
-
-    // Orb body
-    const og = ctx.createRadialGradient(ox-orbR*0.25,oy-orbR*0.25,orbR*0.08, ox,oy,orbR);
-    if (toDark) {
-      const g0 = `rgba(255,${Math.round(250-t*90)},${Math.round(210-t*160)},${easeOut(Math.min(t*2,1))})`;
-      og.addColorStop(0, g0); og.addColorStop(1,`rgba(210,195,145,${easeOut(t)})`);
-    } else {
-      og.addColorStop(0,`rgba(255,255,190,${easeOut(t)})`); og.addColorStop(1,`rgba(255,145,20,${easeOut(t)})`);
-    }
-    ctx.beginPath(); ctx.arc(ox,oy,orbR,0,Math.PI*2); ctx.fillStyle = og; ctx.fill();
-
-    // Crescent
-    if (toDark && t > 0.38) {
-      const cA = easeOut((t-0.38)/0.62);
-      const bg = lerpColor(dayColors[1], nightColors[0], t);
-      ctx.beginPath(); ctx.arc(ox+orbR*0.3, oy-orbR*0.08, orbR*0.84, 0, Math.PI*2);
-      ctx.fillStyle = `rgba(${bg},${cA*0.88})`; ctx.fill();
-    }
-
-    // Sun ray bursts (light mode transition)
-    if (!toDark && t > 0.3 && t < 0.95) {
-      const rA = easeOut((t-0.3)/0.5) * (1-(t-0.5)/0.45) * 0.6;
-      for (let r=0; r<12; r++) {
-        const ang = (r/12)*Math.PI*2 + ts*0.0008;
-        const rLen = orbR*1.4 + Math.sin(ts*0.003+r)*orbR*0.3;
-        ctx.beginPath();
-        ctx.moveTo(ox + Math.cos(ang)*orbR, oy + Math.sin(ang)*orbR);
-        ctx.lineTo(ox + Math.cos(ang)*(orbR+rLen), oy + Math.sin(ang)*(orbR+rLen));
-        ctx.strokeStyle = `rgba(255,220,80,${Math.max(0,rA)})`;
-        ctx.lineWidth = 2.5; ctx.stroke();
+      const showLoader = !sessionStorage.getItem("visited");
+      if (showLoader) {
+        sessionStorage.setItem("visited", "1");
+        document.body.style.overflow = "hidden";
+        setTimeout(() => {
+          clearInterval(quoteInterval);
+          loader.classList.add("hidden");
+          document.body.style.overflow = "";
+        }, 3400);
+      } else {
+        loader.classList.add("hidden");
       }
-    }
 
-    // Shooting stars
-    shoots.forEach(s => {
-      s.prog += 0.013;
-      if (s.prog < 0 || s.prog > 1.25) return;
-      const pct = Math.max(0,Math.min(s.prog,1));
-      const sx = s.x + Math.cos(s.angle)*s.prog*600;
-      const sy = s.y + Math.sin(s.angle)*s.prog*600;
-      const fade = pct < 0.15 ? pct/0.15 : pct > 0.75 ? (1-pct)/0.25 : 1;
-      const bA = toDark ? Math.max(0,(t-0.32)/0.68)*0.9 : Math.max(0,(1-t*1.8)*0.7);
-      if (bA <= 0) return;
-      const sg = ctx.createLinearGradient(sx,sy, sx-Math.cos(s.angle)*s.len, sy-Math.sin(s.angle)*s.len);
-      sg.addColorStop(0,`rgba(255,255,255,${fade*bA})`);
-      sg.addColorStop(1,'rgba(255,255,255,0)');
-      ctx.beginPath();
-      ctx.moveTo(sx,sy);
-      ctx.lineTo(sx-Math.cos(s.angle)*s.len, sy-Math.sin(s.angle)*s.len);
-      ctx.strokeStyle = sg; ctx.lineWidth = s.w; ctx.stroke();
-    });
+      // ── BUILD GRIDS ───────────────────────────────────────
+      function buildGrid(year) {
+        const grid = document.getElementById("grid" + year);
+        const items = allItems[year];
 
-    // Circular reveal mask from toggle button
-    ctx.save();
-    ctx.globalCompositeOperation = 'destination-in';
-    ctx.beginPath(); ctx.arc(cx, cy, easeOut(t)*maxR, 0, Math.PI*2);
-    ctx.fillStyle = '#000'; ctx.fill();
-    ctx.restore();
+        items.forEach((item, idx) => {
+          const card = document.createElement("div");
+          card.className =
+            "media-card" + (item.type === "video" ? " video-card" : "");
+          card.dataset.year = year;
+          card.dataset.idx = idx;
 
-    if (rawT < 1) {
-      animId = requestAnimationFrame(draw);
-    } else {
-      ctx.clearRect(0,0,W,H);
-      canvas.style.opacity = '0';
-      animBusy = false;
-      onDone();
-    }
-  }
-  animId = requestAnimationFrame(draw);
-}
+          if (item.type === "image") {
+            const img = document.createElement("img");
+            img.src = item.src;
+            img.alt = "Memory " + (idx + 1);
+            img.loading = "lazy";
+            card.appendChild(img);
+          } else {
+            const vid = document.createElement("video");
+            vid.src = item.src;
+            vid.preload = "metadata";
+            vid.muted = true;
+            vid.playsInline = true;
+            // show first frame
+            vid.addEventListener("loadedmetadata", () => {
+              vid.currentTime = 0.5;
+            });
+            card.appendChild(vid);
 
-// ── THEME APPLY ───────────────────────────────────────
-function applyTheme(dark, animate = false) {
-  if (animate && animBusy) return;
-  themeLabel.textContent = dark ? 'Dark' : 'Light';
-  localStorage.setItem('theme', dark ? 'dark' : 'light');
-  if (!animate || !canvas) { document.body.classList.toggle('dark', dark); return; }
-  animBusy = true;
-  const rect = themeToggle.getBoundingClientRect();
-  // Safety: reset animBusy after 2.5s max so toggle never gets permanently stuck
-  const safetyTimer = setTimeout(() => { animBusy = false; }, 2500);
-  runSkyAnimation(dark, rect,
-    () => { document.body.classList.toggle('dark', dark); },
-    () => { animBusy = false; clearTimeout(safetyTimer); }
-  );
-}
+            const ov = document.createElement("div");
+            ov.className = "video-overlay";
+            ov.innerHTML = '<div class="play-btn">▶</div>';
+            card.appendChild(ov);
+          }
 
-const savedTheme  = localStorage.getItem('theme');
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-applyTheme(savedTheme ? savedTheme === 'dark' : prefersDark, false);
+          card.addEventListener("click", () => openLightbox(year, idx));
+          grid.appendChild(card);
+        });
+      }
 
-themeToggle.addEventListener('click', () => {
-  applyTheme(!document.body.classList.contains('dark'), true);
-});
+      [2023, 2024, 2025].forEach(buildGrid);
 
-// ── TOUCH SWIPE on lightbox ────────────────────────────
-let tsX = null;
-lightbox.addEventListener('touchstart', e => { tsX = e.touches[0].clientX; });
-lightbox.addEventListener('touchend', e => {
-  if (tsX === null) return;
-  const dx = e.changedTouches[0].clientX - tsX;
-  if (Math.abs(dx) > 50) dx < 0 ? lbNext.click() : lbPrev.click();
-  tsX = null;
-});
-</script>
+      // ── SCROLL REVEAL ─────────────────────────────────────
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e, i) => {
+            if (e.isIntersecting) {
+              // stagger cards
+              const cards = [
+                ...e.target.parentElement.querySelectorAll(
+                  ".media-card:not(.visible)",
+                ),
+              ];
+              cards.forEach((c, ci) => {
+                setTimeout(() => c.classList.add("visible"), ci * 60);
+              });
+            }
+          });
+        },
+        { threshold: 0.05 },
+      );
 
-</body>
+      document
+        .querySelectorAll(".media-grid")
+        .forEach((g) => revealObserver.observe(g));
+
+      // ── NAVBAR SCROLL ─────────────────────────────────────
+      window.addEventListener("scroll", () => {
+        document
+          .getElementById("navbar")
+          .classList.toggle("scrolled", scrollY > 30);
+      });
+
+      // ── LIGHTBOX ──────────────────────────────────────────
+      const lightbox = document.getElementById("lightbox");
+      const lbImg = document.getElementById("lb-img");
+      const lbVideo = document.getElementById("lb-video");
+      const lbClose = document.getElementById("lb-close");
+      const lbPrev = document.getElementById("lb-prev");
+      const lbNext = document.getElementById("lb-next");
+      const lbCounter = document.getElementById("lb-counter");
+
+      let curYear = null,
+        curIdx = 0;
+
+      function openLightbox(year, idx) {
+        curYear = year;
+        curIdx = idx;
+        renderLightbox();
+        lightbox.classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove("open");
+        document.body.style.overflow = "";
+        lbVideo.pause();
+        lbVideo.src = "";
+        lbVideo.style.display = "none";
+        lbImg.style.display = "block";
+      }
+
+      function renderLightbox() {
+        const item = allItems[curYear][curIdx];
+        const total = allItems[curYear].length;
+        lbCounter.textContent = curIdx + 1 + " / " + total;
+
+        if (item.type === "image") {
+          lbVideo.pause();
+          lbVideo.style.display = "none";
+          lbVideo.src = "";
+          lbImg.style.display = "block";
+          lbImg.src = item.src;
+        } else {
+          lbImg.style.display = "none";
+          lbVideo.style.display = "block";
+          lbVideo.src = item.src;
+          lbVideo.load();
+          lbVideo.play().catch(() => {});
+        }
+      }
+
+      // Close handlers are wired in the Cinematic block below (closeLightboxFull)
+      // lbClose.onclick and lightbox.onclick are set there.
+
+      lbPrev.addEventListener("click", () => {
+        curIdx =
+          (curIdx - 1 + allItems[curYear].length) % allItems[curYear].length;
+        renderLightbox();
+      });
+      lbNext.addEventListener("click", () => {
+        curIdx = (curIdx + 1) % allItems[curYear].length;
+        renderLightbox();
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (!lightbox.classList.contains("open")) return;
+        if (e.key === "Escape") {
+          /* handled by cinematic block below */ return;
+        }
+        if (e.key === "ArrowLeft") lbPrev.click();
+        if (e.key === "ArrowRight") lbNext.click();
+      });
+
+      // ── TOGGLE SETUP ─────────────────────────────────────
+      const themeToggle = document.getElementById("themeToggle");
+      const themeLabel = document.getElementById("themeLabel");
+      const rayRing = document.getElementById("rayRing");
+      const trackSky = document.getElementById("trackSky");
+
+      // Build sun rays
+      const RAY_COUNT = 8;
+      for (let i = 0; i < RAY_COUNT; i++) {
+        const r = document.createElement("div");
+        r.className = "ray";
+        const angle = (360 / RAY_COUNT) * i;
+        r.style.cssText = `--r:${angle}deg; transform: rotate(${angle}deg) translateY(-20px) scaleY(1);`;
+        rayRing.appendChild(r);
+      }
+
+      // Build clouds in track
+      const cloudData = [
+        { w: 16, h: 10, t: 8, l: 6 },
+        { w: 12, h: 9, t: 12, l: 16 },
+        { w: 9, h: 7, t: 9, l: 2 },
+      ];
+      cloudData.forEach((c) => {
+        const d = document.createElement("div");
+        d.className = "sky-cloud";
+        d.style.cssText = `width:${c.w}px;height:${c.h}px;top:${c.t}px;left:${c.l}px;border-radius:99px;`;
+        trackSky.appendChild(d);
+      });
+
+      // Build star dots in track
+      const starDots = [
+        { w: 2, h: 2, t: 7, l: 52, delay: "0.1s" },
+        { w: 1.5, h: 1.5, t: 14, l: 58, delay: "0.25s" },
+        { w: 1, h: 1, t: 5, l: 62, delay: "0.15s" },
+        { w: 2, h: 2, t: 18, l: 48, delay: "0.3s" },
+      ];
+      starDots.forEach((s) => {
+        const d = document.createElement("div");
+        d.className = "sky-star";
+        d.style.cssText = `width:${s.w}px;height:${s.h}px;top:${s.t}px;left:${s.l}px;transition-delay:${s.delay};`;
+        trackSky.appendChild(d);
+      });
+
+      // ── CANVAS SKY ANIMATION ──────────────────────────────
+      const canvas = document.getElementById("sky-canvas");
+      const ctx = canvas.getContext("2d");
+      let animId = null;
+      let animBusy = false;
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resizeCanvas();
+      window.addEventListener("resize", resizeCanvas);
+
+      function easeInOut(t) {
+        return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+      }
+      function easeOut(t) {
+        return 1 - Math.pow(1 - t, 3);
+      }
+      function lerpColor(a, b, t) {
+        return a.map((v, i) => Math.round(v + (b[i] - v) * t));
+      }
+
+      function runSkyAnimation(toDark, btnRect, onMidpoint, onDone) {
+        resizeCanvas();
+        canvas.style.display = "block";
+        canvas.style.opacity = "1";
+        const W = canvas.width,
+          H = canvas.height;
+        const cx = btnRect.left + btnRect.width / 2;
+        const cy = btnRect.top + btnRect.height / 2;
+        const maxR =
+          Math.hypot(Math.max(cx, W - cx), Math.max(cy, H - cy)) * 1.05;
+
+        const dayColors = [
+          [255, 230, 160],
+          [255, 140, 80],
+          [120, 190, 230],
+        ];
+        const nightColors = [
+          [8, 6, 24],
+          [18, 10, 42],
+          [4, 3, 18],
+        ];
+
+        const stars = Array.from({ length: 200 }, () => ({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: Math.random() * 1.8 + 0.3,
+          tw: Math.random() * Math.PI * 2,
+          sp: Math.random() * 2 + 1,
+        }));
+
+        const shoots = Array.from({ length: toDark ? 6 : 2 }, (_, i) => ({
+          x: Math.random() * W * 0.7 + W * 0.1,
+          y: Math.random() * H * 0.35,
+          len: Math.random() * 100 + 60,
+          angle: Math.PI / 4 + (Math.random() - 0.5) * 0.3,
+          prog: -(i * 0.2),
+          w: Math.random() * 1.5 + 0.6,
+        }));
+
+        const auroras = toDark
+          ? Array.from({ length: 4 }, (_, i) => ({
+              y: H * 0.08 + i * (H * 0.1),
+              wid: W * 0.35 + Math.random() * W * 0.4,
+              x: Math.random() * W * 0.4,
+              hue: [155, 270, 190, 320][i],
+              ph: Math.random() * Math.PI * 2,
+            }))
+          : [];
+
+        const orbR = toDark ? 42 : 52;
+        const orbSX = toDark ? W * 0.72 : W * 0.28;
+        const orbEX = toDark ? W * 0.28 : W * 0.72;
+        const orbAY = H * 0.3;
+
+        const TOTAL = 1700;
+        let start = null,
+          midFired = false;
+
+        function draw(ts) {
+          if (!start) start = ts;
+          const rawT = Math.min((ts - start) / TOTAL, 1);
+          const t = easeInOut(rawT);
+          if (!midFired && rawT >= 0.44) {
+            midFired = true;
+            onMidpoint();
+          }
+
+          ctx.clearRect(0, 0, W, H);
+
+          // Sky gradient
+          const from = toDark ? dayColors : nightColors;
+          const to = toDark ? nightColors : dayColors;
+          const grad = ctx.createLinearGradient(0, 0, 0, H);
+          [
+            [0, 0],
+            [0.45, 1],
+            [1, 2],
+          ].forEach(([stop, ci]) => {
+            const c = lerpColor(from[ci], to[ci], t);
+            grad.addColorStop(stop, `rgb(${c})`);
+          });
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, W, H);
+
+          // Stars
+          stars.forEach((s) => {
+            const alpha = toDark
+              ? Math.max(0, (t - 0.28) / 0.72) *
+                (0.55 + 0.45 * Math.sin(s.tw + ts * 0.001 * s.sp))
+              : Math.max(0, (1 - t * 1.4) * 0.8) *
+                (0.55 + 0.45 * Math.sin(s.tw + ts * 0.001 * s.sp));
+            if (alpha <= 0) return;
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+            ctx.fill();
+          });
+
+          // Aurora
+          if (toDark && t > 0.48) {
+            const aA = easeOut((t - 0.48) / 0.52) * 0.2;
+            auroras.forEach((a) => {
+              const wy = a.y + Math.sin(ts * 0.0005 + a.ph) * 22;
+              const ag = ctx.createLinearGradient(a.x, 0, a.x + a.wid, 0);
+              ag.addColorStop(0, `hsla(${a.hue},100%,65%,0)`);
+              ag.addColorStop(0.3, `hsla(${a.hue},100%,65%,${aA})`);
+              ag.addColorStop(0.7, `hsla(${a.hue + 40},100%,70%,${aA * 0.7})`);
+              ag.addColorStop(1, `hsla(${a.hue},100%,65%,0)`);
+              ctx.beginPath();
+              ctx.ellipse(
+                a.x + a.wid / 2,
+                wy,
+                a.wid / 2,
+                32 + Math.sin(ts * 0.0003) * 12,
+                0,
+                0,
+                Math.PI * 2,
+              );
+              ctx.fillStyle = ag;
+              ctx.fill();
+            });
+          }
+
+          // Orb arc
+          const ot = easeOut(t);
+          const ox = orbSX + (orbEX - orbSX) * ot;
+          const oy = orbAY - Math.sin(ot * Math.PI) * H * 0.24;
+
+          // Glow halo
+          const glowColor = toDark
+            ? `rgba(220,200,255,${easeOut(t) * 0.4})`
+            : `rgba(255,200,60,${easeOut(t) * 0.5})`;
+          const halo = ctx.createRadialGradient(
+            ox,
+            oy,
+            orbR * 0.6,
+            ox,
+            oy,
+            orbR * 2.5,
+          );
+          halo.addColorStop(0, glowColor);
+          halo.addColorStop(1, "rgba(0,0,0,0)");
+          ctx.beginPath();
+          ctx.arc(ox, oy, orbR * 2.5, 0, Math.PI * 2);
+          ctx.fillStyle = halo;
+          ctx.fill();
+
+          // Orb body
+          const og = ctx.createRadialGradient(
+            ox - orbR * 0.25,
+            oy - orbR * 0.25,
+            orbR * 0.08,
+            ox,
+            oy,
+            orbR,
+          );
+          if (toDark) {
+            const g0 = `rgba(255,${Math.round(250 - t * 90)},${Math.round(210 - t * 160)},${easeOut(Math.min(t * 2, 1))})`;
+            og.addColorStop(0, g0);
+            og.addColorStop(1, `rgba(210,195,145,${easeOut(t)})`);
+          } else {
+            og.addColorStop(0, `rgba(255,255,190,${easeOut(t)})`);
+            og.addColorStop(1, `rgba(255,145,20,${easeOut(t)})`);
+          }
+          ctx.beginPath();
+          ctx.arc(ox, oy, orbR, 0, Math.PI * 2);
+          ctx.fillStyle = og;
+          ctx.fill();
+
+          // Crescent
+          if (toDark && t > 0.38) {
+            const cA = easeOut((t - 0.38) / 0.62);
+            const bg = lerpColor(dayColors[1], nightColors[0], t);
+            ctx.beginPath();
+            ctx.arc(
+              ox + orbR * 0.3,
+              oy - orbR * 0.08,
+              orbR * 0.84,
+              0,
+              Math.PI * 2,
+            );
+            ctx.fillStyle = `rgba(${bg},${cA * 0.88})`;
+            ctx.fill();
+          }
+
+          // Sun ray bursts (light mode transition)
+          if (!toDark && t > 0.3 && t < 0.95) {
+            const rA = easeOut((t - 0.3) / 0.5) * (1 - (t - 0.5) / 0.45) * 0.6;
+            for (let r = 0; r < 12; r++) {
+              const ang = (r / 12) * Math.PI * 2 + ts * 0.0008;
+              const rLen = orbR * 1.4 + Math.sin(ts * 0.003 + r) * orbR * 0.3;
+              ctx.beginPath();
+              ctx.moveTo(ox + Math.cos(ang) * orbR, oy + Math.sin(ang) * orbR);
+              ctx.lineTo(
+                ox + Math.cos(ang) * (orbR + rLen),
+                oy + Math.sin(ang) * (orbR + rLen),
+              );
+              ctx.strokeStyle = `rgba(255,220,80,${Math.max(0, rA)})`;
+              ctx.lineWidth = 2.5;
+              ctx.stroke();
+            }
+          }
+
+          // Shooting stars
+          shoots.forEach((s) => {
+            s.prog += 0.013;
+            if (s.prog < 0 || s.prog > 1.25) return;
+            const pct = Math.max(0, Math.min(s.prog, 1));
+            const sx = s.x + Math.cos(s.angle) * s.prog * 600;
+            const sy = s.y + Math.sin(s.angle) * s.prog * 600;
+            const fade =
+              pct < 0.15 ? pct / 0.15 : pct > 0.75 ? (1 - pct) / 0.25 : 1;
+            const bA = toDark
+              ? Math.max(0, (t - 0.32) / 0.68) * 0.9
+              : Math.max(0, (1 - t * 1.8) * 0.7);
+            if (bA <= 0) return;
+            const sg = ctx.createLinearGradient(
+              sx,
+              sy,
+              sx - Math.cos(s.angle) * s.len,
+              sy - Math.sin(s.angle) * s.len,
+            );
+            sg.addColorStop(0, `rgba(255,255,255,${fade * bA})`);
+            sg.addColorStop(1, "rgba(255,255,255,0)");
+            ctx.beginPath();
+            ctx.moveTo(sx, sy);
+            ctx.lineTo(
+              sx - Math.cos(s.angle) * s.len,
+              sy - Math.sin(s.angle) * s.len,
+            );
+            ctx.strokeStyle = sg;
+            ctx.lineWidth = s.w;
+            ctx.stroke();
+          });
+
+          // Circular reveal mask from toggle button
+          ctx.save();
+          ctx.globalCompositeOperation = "destination-in";
+          ctx.beginPath();
+          ctx.arc(cx, cy, easeOut(t) * maxR, 0, Math.PI * 2);
+          ctx.fillStyle = "#000";
+          ctx.fill();
+          ctx.restore();
+
+          if (rawT < 1) {
+            animId = requestAnimationFrame(draw);
+          } else {
+            ctx.clearRect(0, 0, W, H);
+            canvas.style.opacity = "0";
+            animBusy = false;
+            onDone();
+          }
+        }
+        animId = requestAnimationFrame(draw);
+      }
+
+      // ── THEME APPLY ───────────────────────────────────────
+      function applyTheme(dark, animate = false) {
+        if (animate && animBusy) return;
+        themeLabel.textContent = dark ? "Dark" : "Light";
+        localStorage.setItem("theme", dark ? "dark" : "light");
+        if (!animate || !canvas) {
+          document.body.classList.toggle("dark", dark);
+          return;
+        }
+        animBusy = true;
+        const rect = themeToggle.getBoundingClientRect();
+        // Safety: reset animBusy after 2.5s max so toggle never gets permanently stuck
+        const safetyTimer = setTimeout(() => {
+          animBusy = false;
+        }, 2500);
+        runSkyAnimation(
+          dark,
+          rect,
+          () => {
+            document.body.classList.toggle("dark", dark);
+          },
+          () => {
+            animBusy = false;
+            clearTimeout(safetyTimer);
+          },
+        );
+      }
+
+      const savedTheme = localStorage.getItem("theme");
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches;
+      applyTheme(savedTheme ? savedTheme === "dark" : prefersDark, false);
+
+      themeToggle.addEventListener("click", () => {
+        applyTheme(!document.body.classList.contains("dark"), true);
+      });
+
+      // ── CINEMATIC MODE ────────────────────────────────────
+
+      // Flat chronological list across all years
+      const allYears = [2023, 2024, 2025];
+      const storyItems = [];
+      allYears.forEach((y) =>
+        allItems[y].forEach((item) => storyItems.push({ ...item, year: y })),
+      );
+
+      // Map flat storyItems index → open lightbox
+      function openStoryIdx(idx) {
+        let count = 0;
+        for (const y of allYears) {
+          const len = allItems[y].length;
+          if (idx < count + len) {
+            openLightbox(y, idx - count);
+            return;
+          }
+          count += len;
+        }
+      }
+
+      // Get current flat index from curYear + curIdx
+      function getFlatIdx() {
+        let count = 0;
+        for (const y of allYears) {
+          if (y === curYear) return count + curIdx;
+          count += allItems[y].length;
+        }
+        return 0;
+      }
+
+      // ── DROPDOWN ──────────────────────────────────────────
+      const cineWrap = document.getElementById("cineWrap");
+      const cineBtn = document.getElementById("cineBtn");
+
+      cineBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const open = cineWrap.classList.toggle("open");
+        cineBtn.setAttribute("aria-expanded", open);
+      });
+      document.addEventListener("click", (e) => {
+        if (!cineWrap.contains(e.target)) cineWrap.classList.remove("open");
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") cineWrap.classList.remove("open");
+      });
+      function closeCineMenu() {
+        cineWrap.classList.remove("open");
+        cineBtn.setAttribute("aria-expanded", "false");
+      }
+
+      // ── SLIDESHOW / STORY SHARED ENGINE ───────────────────
+      const ssBar = document.getElementById("ss-bar");
+      const ssFill = document.getElementById("ss-fill");
+      const ssLabel = document.getElementById("ss-label");
+      const ssPlayPause = document.getElementById("ss-playpause");
+      const ssStop = document.getElementById("ss-stop");
+
+      let cineMode = null; // 'slideshow' | 'story' | null
+      let cinePaused = false;
+      let cineFlatIdx = 0;
+      let cineRafId = null;
+      let cineTick0 = null;
+      const SLIDE_MS = 5000;
+
+      let lastChapterYear = null;
+      const chapterOverlay = document.getElementById("chapter-overlay");
+      const chapterTitle = document.getElementById("chapter-title");
+
+      function showChapter(year) {
+        const labels = {
+          2023: "Chapter One",
+          2024: "Chapter Two",
+          2025: "Chapter Three",
+        };
+        document.querySelector(".chapter-eyebrow").textContent =
+          labels[year] || "Now Entering";
+        chapterTitle.textContent = year;
+        // Remove and re-add to restart CSS animation
+        chapterOverlay.classList.remove("show");
+        void chapterOverlay.offsetWidth; // force reflow
+        chapterOverlay.classList.add("show");
+        setTimeout(() => chapterOverlay.classList.remove("show"), 3000);
+      }
+
+      function cineUpdateBar() {
+        const item = storyItems[cineFlatIdx];
+        ssLabel.textContent =
+          (cineMode === "story" ? "Story Mode" : "Slideshow") +
+          "  ·  " +
+          item.year +
+          "  ·  " +
+          (cineFlatIdx + 1) +
+          " / " +
+          storyItems.length;
+      }
+
+      function cineStartProgress() {
+        cancelAnimationFrame(cineRafId);
+        cineTick0 = null;
+        ssFill.style.transition = "none";
+        ssFill.style.width = "0%";
+        const item = storyItems[cineFlatIdx];
+        if (item.type === "image")
+          cineRafId = requestAnimationFrame(cineTickFn);
+      }
+
+      function cineTickFn(ts) {
+        if (!cineMode || cinePaused) return;
+        if (!cineTick0) cineTick0 = ts;
+        const pct = Math.min(((ts - cineTick0) / SLIDE_MS) * 100, 100);
+        ssFill.style.width = pct + "%";
+        if (pct >= 100) {
+          cineAdvance();
+        } else {
+          cineRafId = requestAnimationFrame(cineTickFn);
+        }
+      }
+
+      function cineAdvance() {
+        cancelAnimationFrame(cineRafId);
+        cineFlatIdx = (cineFlatIdx + 1) % storyItems.length;
+        const item = storyItems[cineFlatIdx];
+
+        // Story mode: show chapter card on year change
+        if (cineMode === "story" && item.year !== lastChapterYear) {
+          lastChapterYear = item.year;
+          showChapter(item.year);
+        }
+
+        openStoryIdx(cineFlatIdx);
+        cineUpdateBar();
+        cineStartProgress();
+      }
+
+      function stopCine() {
+        cineMode = null;
+        cinePaused = false;
+        cancelAnimationFrame(cineRafId);
+        ssBar.classList.remove("visible");
+        ssFill.style.width = "0%";
+        lastChapterYear = null;
+        chapterOverlay.classList.remove("show");
+      }
+
+      function startCine(mode, startIdx) {
+        stopCine();
+        cineMode = mode;
+        cinePaused = false;
+        cineFlatIdx = startIdx;
+        ssPlayPause.textContent = "⏸";
+
+        if (mode === "story") {
+          lastChapterYear = storyItems[cineFlatIdx].year;
+          showChapter(lastChapterYear);
+        }
+
+        openStoryIdx(cineFlatIdx);
+        cineUpdateBar();
+        ssBar.classList.add("visible");
+        cineStartProgress();
+      }
+
+      // Video ended → advance
+      lbVideo.addEventListener("ended", () => {
+        if (cineMode && !cinePaused) cineAdvance();
+      });
+
+      // Manual prev/next syncs flat index
+      function cineSyncNav() {
+        if (!cineMode) return;
+        cineFlatIdx = getFlatIdx();
+        cineUpdateBar();
+        cineStartProgress();
+      }
+      lbPrev.addEventListener("click", cineSyncNav);
+      lbNext.addEventListener("click", cineSyncNav);
+
+      // Play/pause button
+      ssPlayPause.addEventListener("click", () => {
+        if (!cineMode) return;
+        cinePaused = !cinePaused;
+        ssPlayPause.textContent = cinePaused ? "▶" : "⏸";
+        if (!cinePaused) {
+          cineTick0 = null;
+          cineRafId = requestAnimationFrame(cineTickFn);
+        } else cancelAnimationFrame(cineRafId);
+      });
+
+      // Stop button
+      ssStop.addEventListener("click", () => {
+        stopCine();
+        closeLightboxFull();
+      });
+
+      // ── NIGHT THEATER ─────────────────────────────────────
+      let theaterPrevDark = false;
+
+      function enterTheater() {
+        theaterPrevDark = document.body.classList.contains("dark");
+        if (!theaterPrevDark) applyTheme(true, true);
+        document.body.classList.add("night-theater");
+      }
+
+      function exitTheater() {
+        if (!document.body.classList.contains("night-theater")) return;
+        document.body.classList.remove("night-theater");
+        if (!theaterPrevDark) applyTheme(false, true);
+      }
+
+      // ── PATCHED closeLightbox ─────────────────────────────
+      function closeLightboxFull() {
+        stopCine();
+        exitTheater();
+        closeLightbox();
+      }
+
+      // Re-wire close button & backdrop click & Escape
+      lbClose.onclick = closeLightboxFull;
+      lightbox.onclick = (e) => {
+        if (e.target === lightbox) closeLightboxFull();
+      };
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && lightbox.classList.contains("open"))
+          closeLightboxFull();
+      });
+
+      // ── BUTTON WIRING ─────────────────────────────────────
+      document.getElementById("cineSlideshow").onclick = () => {
+        closeCineMenu();
+        startCine("slideshow", 0);
+      };
+      document.getElementById("cineStory").onclick = () => {
+        closeCineMenu();
+        startCine("story", 0);
+      };
+      document.getElementById("cineTheater").onclick = () => {
+        closeCineMenu();
+        enterTheater();
+        openStoryIdx(0);
+      };
+      document.getElementById("cineRandom").onclick = () => {
+        closeCineMenu();
+        openStoryIdx(Math.floor(Math.random() * storyItems.length));
+      };
+
+      // ── TOUCH SWIPE on lightbox ────────────────────────────
+      let tsX = null;
+      lightbox.addEventListener("touchstart", (e) => {
+        tsX = e.touches[0].clientX;
+      });
+      lightbox.addEventListener("touchend", (e) => {
+        if (tsX === null) return;
+        const dx = e.changedTouches[0].clientX - tsX;
+        if (Math.abs(dx) > 50) dx < 0 ? lbNext.click() : lbPrev.click();
+        tsX = null;
+      });
+    </script>
+  </body>
 </html>
