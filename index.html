@@ -206,6 +206,279 @@
         color: #fff;
       }
 
+      /* ── CINEMATIC DROPDOWN ──────────────────────────────── */
+      .cine-wrap {
+        position: relative;
+      }
+      .cine-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        background: linear-gradient(135deg, var(--coral), var(--peach));
+        color: #fff;
+        font-size: 0.88rem;
+        font-weight: 500;
+        padding: 0.45rem 1rem;
+        border-radius: 99px;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 3px 14px rgba(255, 107, 107, 0.3);
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+        white-space: nowrap;
+        font-family: "DM Sans", sans-serif;
+      }
+      .cine-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(255, 107, 107, 0.45);
+      }
+      .cine-arrow {
+        display: inline-block;
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        font-size: 0.65rem;
+      }
+      .cine-wrap.open .cine-arrow {
+        transform: rotate(180deg);
+      }
+
+      .cine-dropdown {
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        background: rgba(255, 252, 250, 0.97);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 107, 107, 0.13);
+        border-radius: 18px;
+        padding: 0.5rem;
+        min-width: 215px;
+        box-shadow: 0 20px 60px rgba(100, 40, 20, 0.18);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px) scale(0.96);
+        transform-origin: top right;
+        transition:
+          opacity 0.22s ease,
+          transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+          visibility 0.22s;
+        z-index: 200;
+      }
+      body.dark .cine-dropdown {
+        background: rgba(22, 14, 30, 0.97);
+        border-color: rgba(255, 107, 107, 0.1);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+      }
+      .cine-wrap.open .cine-dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0) scale(1);
+      }
+
+      .cine-item {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        width: 100%;
+        padding: 0.72rem 1rem;
+        border: none;
+        background: none;
+        cursor: pointer;
+        border-radius: 12px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--text-dark);
+        text-align: left;
+        transition:
+          background 0.18s,
+          transform 0.18s,
+          color 0.18s;
+      }
+      .cine-item:hover {
+        background: rgba(255, 107, 107, 0.09);
+        transform: translateX(4px);
+        color: var(--coral);
+      }
+      .ci-icon {
+        font-size: 1.1rem;
+        flex-shrink: 0;
+      }
+      .ci-label {
+        flex: 1;
+      }
+      .cine-divider {
+        height: 1px;
+        background: rgba(255, 107, 107, 0.1);
+        margin: 0.3rem 0.6rem;
+      }
+
+      /* ── SLIDESHOW BAR ───────────────────────────────────── */
+      #ss-bar {
+        position: fixed;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%) translateY(24px);
+        z-index: 1100;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: rgba(10, 6, 16, 0.82);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 99px;
+        padding: 0.55rem 1.3rem;
+        color: #fff;
+        font-size: 0.86rem;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity 0.3s,
+          visibility 0.3s,
+          transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        pointer-events: none;
+      }
+      #ss-bar.visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+        pointer-events: auto;
+      }
+      .ss-progress {
+        width: 110px;
+        height: 3px;
+        background: rgba(255, 255, 255, 0.18);
+        border-radius: 99px;
+        overflow: hidden;
+      }
+      .ss-fill {
+        height: 100%;
+        width: 0;
+        background: linear-gradient(90deg, var(--coral), var(--peach));
+        border-radius: 99px;
+      }
+      .ss-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1.1rem;
+        padding: 0.15rem 0.35rem;
+        border-radius: 6px;
+        line-height: 1;
+        transition:
+          color 0.18s,
+          background 0.18s;
+      }
+      .ss-btn:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.12);
+      }
+      .ss-label {
+        opacity: 0.65;
+        font-size: 0.78rem;
+        white-space: nowrap;
+      }
+
+      /* ── CHAPTER OVERLAY ─────────────────────────────────── */
+      #chapter-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1080;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        opacity: 0;
+      }
+      #chapter-overlay.show {
+        animation: chapterFade 3s ease forwards;
+      }
+      @keyframes chapterFade {
+        0% {
+          opacity: 0;
+        }
+        16% {
+          opacity: 1;
+        }
+        72% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+      .chapter-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.4rem;
+        background: rgba(0, 0, 0, 0.68);
+        backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 22px;
+        padding: 1.8rem 3.5rem;
+      }
+      .chapter-eyebrow {
+        font-size: 0.72rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--peach);
+        font-weight: 600;
+      }
+      .chapter-title {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2rem, 6vw, 3.8rem);
+        color: #fff;
+        font-style: italic;
+      }
+
+      /* ── NIGHT THEATER ───────────────────────────────────── */
+      #theater-dim {
+        position: fixed;
+        inset: 0;
+        z-index: 950;
+        background: rgba(0, 0, 0, 0);
+        pointer-events: none;
+        transition: background 0.55s ease;
+      }
+      body.night-theater #theater-dim {
+        background: rgba(0, 0, 0, 0.55);
+        pointer-events: auto;
+        /* Film grain overlay */
+        background-image:
+          url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),
+          linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55));
+      }
+      body.night-theater #lightbox {
+        background: rgba(0, 0, 0, 0.98);
+      }
+      body.night-theater #lb-img {
+        box-shadow:
+          0 0 0 1px rgba(255, 107, 107, 0.04),
+          0 0 60px 12px rgba(255, 90, 90, 0.06),
+          0 0 120px 30px rgba(200, 100, 80, 0.04),
+          0 30px 100px rgba(0, 0, 0, 0.95);
+        border-radius: 10px;
+      }
+      body.night-theater #lb-video {
+        box-shadow:
+          0 0 80px 20px rgba(0, 0, 0, 0.9),
+          0 0 40px 8px rgba(120, 60, 200, 0.06);
+      }
+      /* Vignette on theater mode */
+      body.night-theater #lightbox::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 50%,
+          rgba(0, 0, 0, 0.7) 100%
+        );
+      }
+
       /* ── HERO ────────────────────────────────────────────── */
       #home {
         min-height: 100svh;
@@ -865,10 +1138,7 @@
         inset: 0;
         z-index: 9998;
         pointer-events: none;
-        opacity: 0;
-      }
-      #sky-canvas.active {
-        opacity: 1;
+        display: none;
       }
 
       /* hero bg dark override */
@@ -888,14 +1158,6 @@
         color: var(--text-dark);
       }
 
-      #sky-canvas {
-        position: fixed;
-        inset: 0;
-        z-index: 9998;
-        pointer-events: none;
-        display: none;
-      }
-
       /* ── RESPONSIVE ──────────────────────────────────────── */
       @media (max-width: 600px) {
         .media-grid {
@@ -910,6 +1172,18 @@
         #lb-next {
           display: none;
         }
+        .cine-btn {
+          font-size: 0.78rem;
+          padding: 0.4rem 0.75rem;
+        }
+        .cine-dropdown {
+          right: -0.5rem;
+          min-width: 190px;
+        }
+      }
+      /* Move counter up when ss-bar is visible */
+      body:has(#ss-bar.visible) .lb-counter {
+        bottom: 5.5rem;
       }
     </style>
   </head>
@@ -930,6 +1204,35 @@
         <a href="#y2023">2023</a>
         <a href="#y2024">2024</a>
         <a href="#y2025">2025</a>
+        <div class="cine-wrap" id="cineWrap">
+          <button
+            class="cine-btn"
+            id="cineBtn"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            🎬 Cinematic <span class="cine-arrow">▾</span>
+          </button>
+          <div class="cine-dropdown" id="cineDropdown" role="menu">
+            <button class="cine-item" id="cineSlideshow" role="menuitem">
+              <span class="ci-icon">🎬</span
+              ><span class="ci-label">Slideshow</span>
+            </button>
+            <button class="cine-item" id="cineStory" role="menuitem">
+              <span class="ci-icon">🎞</span
+              ><span class="ci-label">Story Mode</span>
+            </button>
+            <div class="cine-divider"></div>
+            <button class="cine-item" id="cineTheater" role="menuitem">
+              <span class="ci-icon">🌙</span
+              ><span class="ci-label">Night Theater</span>
+            </button>
+            <button class="cine-item" id="cineRandom" role="menuitem">
+              <span class="ci-icon">🎲</span
+              ><span class="ci-label">Random Memory</span>
+            </button>
+          </div>
+        </div>
       </div>
       <div class="theme-toggle">
         <span class="theme-toggle-label" id="themeLabel">Light</span>
@@ -1021,6 +1324,25 @@
     <footer>
       <p>Built for the memories that <span>never fade</span>. 💛</p>
     </footer>
+
+    <!-- ── SLIDESHOW BAR ──────────────────────────────────── -->
+    <div id="ss-bar">
+      <button class="ss-btn" id="ss-playpause" title="Pause/Resume">⏸</button>
+      <div class="ss-progress"><div class="ss-fill" id="ss-fill"></div></div>
+      <span class="ss-label" id="ss-label">Slideshow</span>
+      <button class="ss-btn" id="ss-stop" title="Stop Slideshow">✕</button>
+    </div>
+
+    <!-- ── CHAPTER OVERLAY ───────────────────────────────── -->
+    <div id="chapter-overlay">
+      <div class="chapter-card">
+        <div class="chapter-eyebrow">Now Entering</div>
+        <div class="chapter-title" id="chapter-title">Chapter 2023</div>
+      </div>
+    </div>
+
+    <!-- ── THEATER DIM ───────────────────────────────────── -->
+    <div id="theater-dim"></div>
 
     <!-- ── LIGHTBOX ────────────────────────────────────────── -->
     <div id="lightbox">
@@ -1263,10 +1585,8 @@
         }
       }
 
-      lbClose.addEventListener("click", closeLightbox);
-      lightbox.addEventListener("click", (e) => {
-        if (e.target === lightbox) closeLightbox();
-      });
+      // Close handlers are wired in the Cinematic block below (closeLightboxFull)
+      // lbClose.onclick and lightbox.onclick are set there.
 
       lbPrev.addEventListener("click", () => {
         curIdx =
@@ -1280,7 +1600,9 @@
 
       document.addEventListener("keydown", (e) => {
         if (!lightbox.classList.contains("open")) return;
-        if (e.key === "Escape") closeLightbox();
+        if (e.key === "Escape") {
+          /* handled by cinematic block below */ return;
+        }
         if (e.key === "ArrowLeft") lbPrev.click();
         if (e.key === "ArrowRight") lbNext.click();
       });
@@ -1644,6 +1966,253 @@
       themeToggle.addEventListener("click", () => {
         applyTheme(!document.body.classList.contains("dark"), true);
       });
+
+      // ── CINEMATIC MODE ────────────────────────────────────
+
+      // Flat chronological list across all years
+      const allYears = [2023, 2024, 2025];
+      const storyItems = [];
+      allYears.forEach((y) =>
+        allItems[y].forEach((item) => storyItems.push({ ...item, year: y })),
+      );
+
+      // Map flat storyItems index → open lightbox
+      function openStoryIdx(idx) {
+        let count = 0;
+        for (const y of allYears) {
+          const len = allItems[y].length;
+          if (idx < count + len) {
+            openLightbox(y, idx - count);
+            return;
+          }
+          count += len;
+        }
+      }
+
+      // Get current flat index from curYear + curIdx
+      function getFlatIdx() {
+        let count = 0;
+        for (const y of allYears) {
+          if (y === curYear) return count + curIdx;
+          count += allItems[y].length;
+        }
+        return 0;
+      }
+
+      // ── DROPDOWN ──────────────────────────────────────────
+      const cineWrap = document.getElementById("cineWrap");
+      const cineBtn = document.getElementById("cineBtn");
+
+      cineBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const open = cineWrap.classList.toggle("open");
+        cineBtn.setAttribute("aria-expanded", open);
+      });
+      document.addEventListener("click", (e) => {
+        if (!cineWrap.contains(e.target)) cineWrap.classList.remove("open");
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") cineWrap.classList.remove("open");
+      });
+      function closeCineMenu() {
+        cineWrap.classList.remove("open");
+        cineBtn.setAttribute("aria-expanded", "false");
+      }
+
+      // ── SLIDESHOW / STORY SHARED ENGINE ───────────────────
+      const ssBar = document.getElementById("ss-bar");
+      const ssFill = document.getElementById("ss-fill");
+      const ssLabel = document.getElementById("ss-label");
+      const ssPlayPause = document.getElementById("ss-playpause");
+      const ssStop = document.getElementById("ss-stop");
+
+      let cineMode = null; // 'slideshow' | 'story' | null
+      let cinePaused = false;
+      let cineFlatIdx = 0;
+      let cineRafId = null;
+      let cineTick0 = null;
+      const SLIDE_MS = 5000;
+
+      let lastChapterYear = null;
+      const chapterOverlay = document.getElementById("chapter-overlay");
+      const chapterTitle = document.getElementById("chapter-title");
+
+      function showChapter(year) {
+        const labels = {
+          2023: "Chapter One",
+          2024: "Chapter Two",
+          2025: "Chapter Three",
+        };
+        document.querySelector(".chapter-eyebrow").textContent =
+          labels[year] || "Now Entering";
+        chapterTitle.textContent = year;
+        // Remove and re-add to restart CSS animation
+        chapterOverlay.classList.remove("show");
+        void chapterOverlay.offsetWidth; // force reflow
+        chapterOverlay.classList.add("show");
+        setTimeout(() => chapterOverlay.classList.remove("show"), 3000);
+      }
+
+      function cineUpdateBar() {
+        const item = storyItems[cineFlatIdx];
+        ssLabel.textContent =
+          (cineMode === "story" ? "Story Mode" : "Slideshow") +
+          "  ·  " +
+          item.year +
+          "  ·  " +
+          (cineFlatIdx + 1) +
+          " / " +
+          storyItems.length;
+      }
+
+      function cineStartProgress() {
+        cancelAnimationFrame(cineRafId);
+        cineTick0 = null;
+        ssFill.style.transition = "none";
+        ssFill.style.width = "0%";
+        const item = storyItems[cineFlatIdx];
+        if (item.type === "image")
+          cineRafId = requestAnimationFrame(cineTickFn);
+      }
+
+      function cineTickFn(ts) {
+        if (!cineMode || cinePaused) return;
+        if (!cineTick0) cineTick0 = ts;
+        const pct = Math.min(((ts - cineTick0) / SLIDE_MS) * 100, 100);
+        ssFill.style.width = pct + "%";
+        if (pct >= 100) {
+          cineAdvance();
+        } else {
+          cineRafId = requestAnimationFrame(cineTickFn);
+        }
+      }
+
+      function cineAdvance() {
+        cancelAnimationFrame(cineRafId);
+        cineFlatIdx = (cineFlatIdx + 1) % storyItems.length;
+        const item = storyItems[cineFlatIdx];
+
+        // Story mode: show chapter card on year change
+        if (cineMode === "story" && item.year !== lastChapterYear) {
+          lastChapterYear = item.year;
+          showChapter(item.year);
+        }
+
+        openStoryIdx(cineFlatIdx);
+        cineUpdateBar();
+        cineStartProgress();
+      }
+
+      function stopCine() {
+        cineMode = null;
+        cinePaused = false;
+        cancelAnimationFrame(cineRafId);
+        ssBar.classList.remove("visible");
+        ssFill.style.width = "0%";
+        lastChapterYear = null;
+        chapterOverlay.classList.remove("show");
+      }
+
+      function startCine(mode, startIdx) {
+        stopCine();
+        cineMode = mode;
+        cinePaused = false;
+        cineFlatIdx = startIdx;
+        ssPlayPause.textContent = "⏸";
+
+        if (mode === "story") {
+          lastChapterYear = storyItems[cineFlatIdx].year;
+          showChapter(lastChapterYear);
+        }
+
+        openStoryIdx(cineFlatIdx);
+        cineUpdateBar();
+        ssBar.classList.add("visible");
+        cineStartProgress();
+      }
+
+      // Video ended → advance
+      lbVideo.addEventListener("ended", () => {
+        if (cineMode && !cinePaused) cineAdvance();
+      });
+
+      // Manual prev/next syncs flat index
+      function cineSyncNav() {
+        if (!cineMode) return;
+        cineFlatIdx = getFlatIdx();
+        cineUpdateBar();
+        cineStartProgress();
+      }
+      lbPrev.addEventListener("click", cineSyncNav);
+      lbNext.addEventListener("click", cineSyncNav);
+
+      // Play/pause button
+      ssPlayPause.addEventListener("click", () => {
+        if (!cineMode) return;
+        cinePaused = !cinePaused;
+        ssPlayPause.textContent = cinePaused ? "▶" : "⏸";
+        if (!cinePaused) {
+          cineTick0 = null;
+          cineRafId = requestAnimationFrame(cineTickFn);
+        } else cancelAnimationFrame(cineRafId);
+      });
+
+      // Stop button
+      ssStop.addEventListener("click", () => {
+        stopCine();
+        closeLightboxFull();
+      });
+
+      // ── NIGHT THEATER ─────────────────────────────────────
+      let theaterPrevDark = false;
+
+      function enterTheater() {
+        theaterPrevDark = document.body.classList.contains("dark");
+        if (!theaterPrevDark) applyTheme(true, true);
+        document.body.classList.add("night-theater");
+      }
+
+      function exitTheater() {
+        if (!document.body.classList.contains("night-theater")) return;
+        document.body.classList.remove("night-theater");
+        if (!theaterPrevDark) applyTheme(false, true);
+      }
+
+      // ── PATCHED closeLightbox ─────────────────────────────
+      function closeLightboxFull() {
+        stopCine();
+        exitTheater();
+        closeLightbox();
+      }
+
+      // Re-wire close button & backdrop click & Escape
+      lbClose.onclick = closeLightboxFull;
+      lightbox.onclick = (e) => {
+        if (e.target === lightbox) closeLightboxFull();
+      };
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && lightbox.classList.contains("open"))
+          closeLightboxFull();
+      });
+
+      // ── BUTTON WIRING ─────────────────────────────────────
+      document.getElementById("cineSlideshow").onclick = () => {
+        closeCineMenu();
+        startCine("slideshow", 0);
+      };
+      document.getElementById("cineStory").onclick = () => {
+        closeCineMenu();
+        startCine("story", 0);
+      };
+      document.getElementById("cineTheater").onclick = () => {
+        closeCineMenu();
+        enterTheater();
+        openStoryIdx(0);
+      };
+      document.getElementById("cineRandom").onclick = () => {
+        closeCineMenu();
+        openStoryIdx(Math.floor(Math.random() * storyItems.length));
+      };
 
       // ── TOUCH SWIPE on lightbox ────────────────────────────
       let tsX = null;
