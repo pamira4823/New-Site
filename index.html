@@ -20,6 +20,26 @@
       --card-bg: rgba(255,255,255,0.72);
       --shadow: 0 8px 40px rgba(100,60,30,0.13);
       --radius: 18px;
+      --nav-bg: rgba(255,249,245,0.85);
+      --section-odd: #FFF9F5;
+      --section-even-a: #EAF4FF;
+      --section-even-b: #F5EEFF;
+      --footer-bg: #2D1B10;
+      --footer-text: rgba(255,255,255,0.7);
+    }
+
+    body.dark {
+      --warm-white: #141018;
+      --text-dark: #F0EBE8;
+      --text-mid: #B09990;
+      --card-bg: rgba(30,22,28,0.85);
+      --shadow: 0 8px 40px rgba(0,0,0,0.4);
+      --nav-bg: rgba(18,14,22,0.88);
+      --section-odd: #141018;
+      --section-even-a: #0F1520;
+      --section-even-b: #150F1E;
+      --footer-bg: #0A0810;
+      --footer-text: rgba(255,255,255,0.5);
     }
 
     html { scroll-behavior: smooth; }
@@ -29,6 +49,7 @@
       background: var(--warm-white);
       color: var(--text-dark);
       overflow-x: hidden;
+      transition: background 0.4s ease, color 0.4s ease;
     }
 
     /* ── LOADING SCREEN ─────────────────────────────────── */
@@ -93,10 +114,10 @@
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 1rem 2rem;
-      background: rgba(255,249,245,0.85);
+      background: var(--nav-bg);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid rgba(255,107,107,0.12);
-      transition: box-shadow 0.3s;
+      transition: box-shadow 0.3s, background 0.4s;
     }
     nav.scrolled { box-shadow: 0 4px 24px rgba(100,60,30,0.10); }
 
@@ -197,14 +218,14 @@
       to   { transform: translateY(0);    opacity: 1; }
     }
 
-    /* ── YEAR SECTIONS ───────────────────────────────────── */
     .year-section {
       padding: 5rem 2rem 6rem;
       position: relative;
+      transition: background 0.4s;
     }
-    .year-section:nth-child(odd) { background: var(--warm-white); }
+    .year-section:nth-child(odd) { background: var(--section-odd); }
     .year-section:nth-child(even) {
-      background: linear-gradient(180deg, #EAF4FF 0%, #F5EEFF 100%);
+      background: linear-gradient(180deg, var(--section-even-a) 0%, var(--section-even-b) 100%);
     }
 
     .section-header {
@@ -386,11 +407,12 @@
 
     /* ── FOOTER ──────────────────────────────────────────── */
     footer {
-      background: var(--text-dark);
-      color: rgba(255,255,255,0.7);
+      background: var(--footer-bg);
+      color: var(--footer-text);
       text-align: center;
       padding: 2.5rem 2rem;
       font-size: 0.95rem;
+      transition: background 0.4s;
     }
     footer span { color: var(--coral); }
 
@@ -415,6 +437,116 @@
       animation: scrollDot 1.5s ease-in-out infinite;
     }
     @keyframes scrollDot { 0%,100%{top:2px} 50%{top:10px} }
+
+    /* ── THEME TOGGLE ────────────────────────────────────── */
+    .theme-toggle {
+      display: flex; align-items: center; gap: 0.55rem;
+      margin-left: 0.5rem;
+    }
+    .theme-toggle-label {
+      font-size: 0.78rem; color: var(--text-mid);
+      user-select: none; transition: color 0.4s;
+      display: none; font-weight: 500;
+    }
+    @media (min-width: 500px) { .theme-toggle-label { display: block; } }
+
+    .toggle-track {
+      position: relative;
+      width: 76px; height: 36px;
+      border-radius: 99px;
+      cursor: pointer; border: none; padding: 0;
+      outline: none; overflow: hidden;
+      flex-shrink: 0;
+      background: linear-gradient(to right, #7EC8E3, #FFD580);
+      box-shadow: 0 2px 12px rgba(255,180,60,0.3), inset 0 1px 0 rgba(255,255,255,0.35);
+      transition: background 0.7s ease, box-shadow 0.5s;
+    }
+    .toggle-track:focus-visible { outline: 2px solid var(--coral); outline-offset: 3px; }
+    body.dark .toggle-track {
+      background: linear-gradient(to right, #0a0a2e, #1c0f3f);
+      box-shadow: 0 2px 14px rgba(100,60,220,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+
+    /* Scrolling sky layer inside track */
+    .track-sky {
+      position: absolute; inset: 0; overflow: hidden; border-radius: 99px;
+    }
+    .sky-cloud {
+      position: absolute; border-radius: 99px;
+      background: rgba(255,255,255,0.8);
+      transition: opacity 0.6s, transform 0.6s;
+    }
+    body.dark .sky-cloud { opacity: 0; transform: translateX(12px) scaleX(0.5); }
+
+    .sky-star {
+      position: absolute; border-radius: 50%;
+      background: #fff;
+      opacity: 0; transform: scale(0);
+      transition: opacity 0.5s, transform 0.5s;
+    }
+    body.dark .sky-star { opacity: 1; transform: scale(1); }
+
+    /* Orb */
+    .toggle-thumb {
+      position: absolute;
+      top: 5px; left: 5px;
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 38% 32%, #FFF176, #FFA500);
+      box-shadow: 0 0 0 3px rgba(255,210,60,0.22),
+                  0 0 20px 6px rgba(255,170,30,0.55);
+      transition: transform 0.6s cubic-bezier(.34,1.56,.64,1),
+                  background 0.5s, box-shadow 0.5s;
+      z-index: 2;
+    }
+    body.dark .toggle-thumb {
+      transform: translateX(40px);
+      background: radial-gradient(circle at 60% 38%, #F5ECD7, #C8B89A);
+      box-shadow: 0 0 0 3px rgba(180,160,255,0.18),
+                  0 0 16px 4px rgba(160,130,255,0.38),
+                  -5px -2px 0 3px #0a0a2e;
+    }
+
+    /* Sun rays ring around orb */
+    .ray-ring {
+      position: absolute; inset: -14px;
+      border-radius: 50%; pointer-events: none;
+    }
+    .ray {
+      position: absolute; top: 50%; left: 50%;
+      width: 2.5px; height: 9px;
+      margin-left: -1.25px;
+      background: rgba(255,225,60,0.8);
+      border-radius: 99px;
+      transform-origin: 50% calc(14px + 13px);
+      transition: opacity 0.4s, transform 0.5s;
+    }
+    body.dark .ray { opacity: 0; transform: scaleY(0) rotate(var(--r)); }
+
+    /* Moon craters */
+    .craters { position: absolute; inset: 0; border-radius: 50%; opacity: 0; transition: opacity 0.4s 0.25s; }
+    .crater  { position: absolute; border-radius: 50%; background: rgba(0,0,0,0.13); }
+    body.dark .craters { opacity: 1; }
+
+    /* ── CANVAS OVERLAY ──────────────────────────────────── */
+    #sky-canvas {
+      position: fixed; inset: 0; z-index: 9998;
+      pointer-events: none;
+      opacity: 0;
+    }
+    #sky-canvas.active { opacity: 1; }
+
+    /* hero bg dark override */
+    body.dark .hero-bg {
+      background: linear-gradient(160deg, #1a0f18 0%, #141018 40%, #0e1520 80%, #130e1e 100%);
+    }
+    body.dark .blob { opacity: 0.18; }
+    body.dark .section-title { color: var(--text-dark); }
+
+    #sky-canvas {
+      position: fixed; inset: 0; z-index: 9998;
+      pointer-events: none; display: none;
+    }
 
     /* ── RESPONSIVE ──────────────────────────────────────── */
     @media (max-width: 600px) {
@@ -442,6 +574,20 @@
     <a href="#y2023">2023</a>
     <a href="#y2024">2024</a>
     <a href="#y2025">2025</a>
+  </div>
+  <div class="theme-toggle">
+    <span class="theme-toggle-label" id="themeLabel">Light</span>
+    <button class="toggle-track" id="themeToggle" title="Toggle dark/light mode" aria-label="Toggle dark mode">
+      <div class="track-sky" id="trackSky"></div>
+      <div class="toggle-thumb" id="toggleThumb">
+        <div class="ray-ring" id="rayRing"></div>
+        <div class="craters">
+          <div class="crater" style="width:5px;height:5px;top:5px;left:5px;"></div>
+          <div class="crater" style="width:3px;height:3px;top:14px;left:11px;"></div>
+          <div class="crater" style="width:4px;height:4px;top:8px;left:15px;"></div>
+        </div>
+      </div>
+    </button>
   </div>
 </nav>
 
@@ -514,6 +660,8 @@
   <button class="lb-nav" id="lb-next" title="Next">›</button>
   <div class="lb-counter" id="lb-counter"></div>
 </div>
+
+<canvas id="sky-canvas"></canvas>
 
 <script>
 // ── DATA ──────────────────────────────────────────────
@@ -713,6 +861,245 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') lbNext.click();
 });
 
+// ── TOGGLE SETUP ─────────────────────────────────────
+const themeToggle = document.getElementById('themeToggle');
+const themeLabel  = document.getElementById('themeLabel');
+const rayRing     = document.getElementById('rayRing');
+const trackSky    = document.getElementById('trackSky');
+
+// Build sun rays
+const RAY_COUNT = 8;
+for (let i = 0; i < RAY_COUNT; i++) {
+  const r = document.createElement('div');
+  r.className = 'ray';
+  const angle = (360 / RAY_COUNT) * i;
+  r.style.cssText = `--r:${angle}deg; transform: rotate(${angle}deg) translateY(-20px) scaleY(1);`;
+  rayRing.appendChild(r);
+}
+
+// Build clouds in track
+const cloudData = [{w:16,h:10,t:8,l:6},{w:12,h:9,t:12,l:16},{w:9,h:7,t:9,l:2}];
+cloudData.forEach(c => {
+  const d = document.createElement('div');
+  d.className = 'sky-cloud';
+  d.style.cssText = `width:${c.w}px;height:${c.h}px;top:${c.t}px;left:${c.l}px;border-radius:99px;`;
+  trackSky.appendChild(d);
+});
+
+// Build star dots in track
+const starDots = [{w:2,h:2,t:7,l:52,delay:'0.1s'},{w:1.5,h:1.5,t:14,l:58,delay:'0.25s'},{w:1,h:1,t:5,l:62,delay:'0.15s'},{w:2,h:2,t:18,l:48,delay:'0.3s'}];
+starDots.forEach(s => {
+  const d = document.createElement('div');
+  d.className = 'sky-star';
+  d.style.cssText = `width:${s.w}px;height:${s.h}px;top:${s.t}px;left:${s.l}px;transition-delay:${s.delay};`;
+  trackSky.appendChild(d);
+});
+
+// ── CANVAS SKY ANIMATION ──────────────────────────────
+const canvas = document.getElementById('sky-canvas');
+const ctx    = canvas.getContext('2d');
+let animId   = null;
+let animBusy = false;
+
+function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function easeInOut(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+function easeOut(t)   { return 1 - Math.pow(1-t, 3); }
+function lerpColor(a, b, t) { return a.map((v,i) => Math.round(v + (b[i]-v)*t)); }
+
+function runSkyAnimation(toDark, btnRect, onMidpoint, onDone) {
+  resizeCanvas();
+  canvas.style.display = 'block'; canvas.style.opacity = '1';
+  const W = canvas.width, H = canvas.height;
+  const cx = btnRect.left + btnRect.width/2;
+  const cy = btnRect.top  + btnRect.height/2;
+  const maxR = Math.hypot(Math.max(cx, W-cx), Math.max(cy, H-cy)) * 1.05;
+
+  const dayColors   = [[255,230,160],[255,140,80],[120,190,230]];
+  const nightColors = [[8,6,24],     [18,10,42],  [4,3,18]];
+
+  const stars = Array.from({length:200}, () => ({
+    x: Math.random()*W, y: Math.random()*H,
+    r: Math.random()*1.8+0.3,
+    tw: Math.random()*Math.PI*2,
+    sp: Math.random()*2+1
+  }));
+
+  const shoots = Array.from({length: toDark ? 6 : 2}, (_,i) => ({
+    x: Math.random()*W*0.7+W*0.1, y: Math.random()*H*0.35,
+    len: Math.random()*100+60,
+    angle: Math.PI/4 + (Math.random()-0.5)*0.3,
+    prog: -(i*0.2), w: Math.random()*1.5+0.6
+  }));
+
+  const auroras = toDark ? Array.from({length:4}, (_,i) => ({
+    y: H*0.08 + i*(H*0.1),
+    wid: W*0.35 + Math.random()*W*0.4,
+    x: Math.random()*W*0.4,
+    hue: [155, 270, 190, 320][i],
+    ph: Math.random()*Math.PI*2
+  })) : [];
+
+  const orbR  = toDark ? 42 : 52;
+  const orbSX = toDark ? W*0.72 : W*0.28;
+  const orbEX = toDark ? W*0.28 : W*0.72;
+  const orbAY = H * 0.30;
+
+  const TOTAL = 1700;
+  let start = null, midFired = false;
+
+  function draw(ts) {
+    if (!start) start = ts;
+    const rawT = Math.min((ts - start) / TOTAL, 1);
+    const t    = easeInOut(rawT);
+    if (!midFired && rawT >= 0.44) { midFired = true; onMidpoint(); }
+
+    ctx.clearRect(0,0,W,H);
+
+    // Sky gradient
+    const from = toDark ? dayColors : nightColors;
+    const to   = toDark ? nightColors : dayColors;
+    const grad = ctx.createLinearGradient(0,0,0,H);
+    [[0,0],[0.45,1],[1,2]].forEach(([stop,ci]) => {
+      const c = lerpColor(from[ci], to[ci], t);
+      grad.addColorStop(stop, `rgb(${c})`);
+    });
+    ctx.fillStyle = grad; ctx.fillRect(0,0,W,H);
+
+    // Stars
+    stars.forEach(s => {
+      const alpha = toDark
+        ? Math.max(0,(t-0.28)/0.72) * (0.55 + 0.45*Math.sin(s.tw + ts*0.001*s.sp))
+        : Math.max(0,(1-t*1.4)*0.8) * (0.55 + 0.45*Math.sin(s.tw + ts*0.001*s.sp));
+      if (alpha <= 0) return;
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(255,255,255,${alpha})`; ctx.fill();
+    });
+
+    // Aurora
+    if (toDark && t > 0.48) {
+      const aA = easeOut((t-0.48)/0.52) * 0.20;
+      auroras.forEach(a => {
+        const wy = a.y + Math.sin(ts*0.0005+a.ph)*22;
+        const ag = ctx.createLinearGradient(a.x,0,a.x+a.wid,0);
+        ag.addColorStop(0, `hsla(${a.hue},100%,65%,0)`);
+        ag.addColorStop(0.3, `hsla(${a.hue},100%,65%,${aA})`);
+        ag.addColorStop(0.7, `hsla(${a.hue+40},100%,70%,${aA*0.7})`);
+        ag.addColorStop(1, `hsla(${a.hue},100%,65%,0)`);
+        ctx.beginPath();
+        ctx.ellipse(a.x+a.wid/2, wy, a.wid/2, 32+Math.sin(ts*0.0003)*12, 0, 0, Math.PI*2);
+        ctx.fillStyle = ag; ctx.fill();
+      });
+    }
+
+    // Orb arc
+    const ot = easeOut(t);
+    const ox = orbSX + (orbEX - orbSX) * ot;
+    const oy = orbAY - Math.sin(ot * Math.PI) * H * 0.24;
+
+    // Glow halo
+    const glowColor = toDark ? `rgba(220,200,255,${easeOut(t)*0.4})` : `rgba(255,200,60,${easeOut(t)*0.5})`;
+    const halo = ctx.createRadialGradient(ox,oy,orbR*0.6, ox,oy,orbR*2.5);
+    halo.addColorStop(0, glowColor); halo.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.beginPath(); ctx.arc(ox,oy,orbR*2.5,0,Math.PI*2);
+    ctx.fillStyle = halo; ctx.fill();
+
+    // Orb body
+    const og = ctx.createRadialGradient(ox-orbR*0.25,oy-orbR*0.25,orbR*0.08, ox,oy,orbR);
+    if (toDark) {
+      const g0 = `rgba(255,${Math.round(250-t*90)},${Math.round(210-t*160)},${easeOut(Math.min(t*2,1))})`;
+      og.addColorStop(0, g0); og.addColorStop(1,`rgba(210,195,145,${easeOut(t)})`);
+    } else {
+      og.addColorStop(0,`rgba(255,255,190,${easeOut(t)})`); og.addColorStop(1,`rgba(255,145,20,${easeOut(t)})`);
+    }
+    ctx.beginPath(); ctx.arc(ox,oy,orbR,0,Math.PI*2); ctx.fillStyle = og; ctx.fill();
+
+    // Crescent
+    if (toDark && t > 0.38) {
+      const cA = easeOut((t-0.38)/0.62);
+      const bg = lerpColor(dayColors[1], nightColors[0], t);
+      ctx.beginPath(); ctx.arc(ox+orbR*0.3, oy-orbR*0.08, orbR*0.84, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(${bg},${cA*0.88})`; ctx.fill();
+    }
+
+    // Sun ray bursts (light mode transition)
+    if (!toDark && t > 0.3 && t < 0.95) {
+      const rA = easeOut((t-0.3)/0.5) * (1-(t-0.5)/0.45) * 0.6;
+      for (let r=0; r<12; r++) {
+        const ang = (r/12)*Math.PI*2 + ts*0.0008;
+        const rLen = orbR*1.4 + Math.sin(ts*0.003+r)*orbR*0.3;
+        ctx.beginPath();
+        ctx.moveTo(ox + Math.cos(ang)*orbR, oy + Math.sin(ang)*orbR);
+        ctx.lineTo(ox + Math.cos(ang)*(orbR+rLen), oy + Math.sin(ang)*(orbR+rLen));
+        ctx.strokeStyle = `rgba(255,220,80,${Math.max(0,rA)})`;
+        ctx.lineWidth = 2.5; ctx.stroke();
+      }
+    }
+
+    // Shooting stars
+    shoots.forEach(s => {
+      s.prog += 0.013;
+      if (s.prog < 0 || s.prog > 1.25) return;
+      const pct = Math.max(0,Math.min(s.prog,1));
+      const sx = s.x + Math.cos(s.angle)*s.prog*600;
+      const sy = s.y + Math.sin(s.angle)*s.prog*600;
+      const fade = pct < 0.15 ? pct/0.15 : pct > 0.75 ? (1-pct)/0.25 : 1;
+      const bA = toDark ? Math.max(0,(t-0.32)/0.68)*0.9 : Math.max(0,(1-t*1.8)*0.7);
+      if (bA <= 0) return;
+      const sg = ctx.createLinearGradient(sx,sy, sx-Math.cos(s.angle)*s.len, sy-Math.sin(s.angle)*s.len);
+      sg.addColorStop(0,`rgba(255,255,255,${fade*bA})`);
+      sg.addColorStop(1,'rgba(255,255,255,0)');
+      ctx.beginPath();
+      ctx.moveTo(sx,sy);
+      ctx.lineTo(sx-Math.cos(s.angle)*s.len, sy-Math.sin(s.angle)*s.len);
+      ctx.strokeStyle = sg; ctx.lineWidth = s.w; ctx.stroke();
+    });
+
+    // Circular reveal mask from toggle button
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-in';
+    ctx.beginPath(); ctx.arc(cx, cy, easeOut(t)*maxR, 0, Math.PI*2);
+    ctx.fillStyle = '#000'; ctx.fill();
+    ctx.restore();
+
+    if (rawT < 1) {
+      animId = requestAnimationFrame(draw);
+    } else {
+      ctx.clearRect(0,0,W,H);
+      canvas.style.opacity = '0';
+      animBusy = false;
+      onDone();
+    }
+  }
+  animId = requestAnimationFrame(draw);
+}
+
+// ── THEME APPLY ───────────────────────────────────────
+function applyTheme(dark, animate = false) {
+  if (animate && animBusy) return;
+  themeLabel.textContent = dark ? 'Dark' : 'Light';
+  localStorage.setItem('theme', dark ? 'dark' : 'light');
+  if (!animate || !canvas) { document.body.classList.toggle('dark', dark); return; }
+  animBusy = true;
+  const rect = themeToggle.getBoundingClientRect();
+  // Safety: reset animBusy after 2.5s max so toggle never gets permanently stuck
+  const safetyTimer = setTimeout(() => { animBusy = false; }, 2500);
+  runSkyAnimation(dark, rect,
+    () => { document.body.classList.toggle('dark', dark); },
+    () => { animBusy = false; clearTimeout(safetyTimer); }
+  );
+}
+
+const savedTheme  = localStorage.getItem('theme');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+applyTheme(savedTheme ? savedTheme === 'dark' : prefersDark, false);
+
+themeToggle.addEventListener('click', () => {
+  applyTheme(!document.body.classList.contains('dark'), true);
+});
+
 // ── TOUCH SWIPE on lightbox ────────────────────────────
 let tsX = null;
 lightbox.addEventListener('touchstart', e => { tsX = e.touches[0].clientX; });
@@ -723,5 +1110,6 @@ lightbox.addEventListener('touchend', e => {
   tsX = null;
 });
 </script>
+
 </body>
 </html>
