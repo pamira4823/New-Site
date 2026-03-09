@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Memories</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --coral: #FF6B6B;
+      --peach: #FFB347;
+      --sky: #74C0FC;
+      --mint: #96F2D7;
+      --lavender: #D0BFFF;
+      --warm-white: #FFF9F5;
+      --text-dark: #2D1B10;
+      --text-mid: #6B4C3B;
+      --card-bg: rgba(255,255,255,0.72);
+      --shadow: 0 8px 40px rgba(100,60,30,0.13);
+      --radius: 18px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--warm-white);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* ── LOADING SCREEN ─────────────────────────────────── */
+    #loader {
+      position: fixed; inset: 0; z-index: 9999;
+      background: linear-gradient(135deg, #FF6B6B 0%, #FFB347 40%, #74C0FC 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+    #loader.hidden { opacity: 0; visibility: hidden; }
+
+    .loader-icon {
+      font-size: 4rem; margin-bottom: 1.5rem;
+      animation: heartbeat 1.4s ease-in-out infinite;
+    }
+    @keyframes heartbeat {
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.18); }
+    }
+
+    .loader-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      color: #fff;
+      letter-spacing: -0.02em;
+      margin-bottom: 2.5rem;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.15);
+    }
+
+    .quote-wrap {
+      width: min(520px, 90vw);
+      text-align: center;
+      min-height: 3.5rem;
+      position: relative;
+    }
+    .loader-quote {
+      position: absolute; inset: 0;
+      font-size: 1.1rem; color: rgba(255,255,255,0.92);
+      font-style: italic; line-height: 1.6;
+      opacity: 0; transition: opacity 0.7s ease;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .loader-quote.active { opacity: 1; }
+
+    .loader-bar-wrap {
+      margin-top: 3rem;
+      width: min(300px, 80vw); height: 4px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 99px; overflow: hidden;
+    }
+    .loader-bar {
+      height: 100%; width: 0;
+      background: #fff;
+      border-radius: 99px;
+      animation: loadprog 3.2s ease forwards;
+    }
+    @keyframes loadprog { to { width: 100%; } }
+
+    /* ── NAVBAR ─────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem;
+      background: rgba(255,249,245,0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,107,107,0.12);
+      transition: box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow: 0 4px 24px rgba(100,60,30,0.10); }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem; font-style: italic;
+      color: var(--coral);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 0.3rem; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-mid);
+      font-size: 0.9rem; font-weight: 500;
+      padding: 0.45rem 0.9rem;
+      border-radius: 99px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-links a:hover {
+      background: var(--coral);
+      color: #fff;
+    }
+
+    /* ── HERO ────────────────────────────────────────────── */
+    #home {
+      min-height: 100svh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 7rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: linear-gradient(160deg, #FFF0EA 0%, #FFF9F5 40%, #EAF4FF 80%, #F5EEFF 100%);
+    }
+    /* floating blobs */
+    .blob {
+      position: absolute; border-radius: 50%;
+      filter: blur(70px); opacity: 0.45;
+      animation: float 8s ease-in-out infinite;
+    }
+    .blob1 { width: 420px; height: 420px; background: #FFB347; top: -80px; left: -100px; animation-delay: 0s; }
+    .blob2 { width: 320px; height: 320px; background: #FF6B6B; top: 30%; right: -80px; animation-delay: -3s; }
+    .blob3 { width: 280px; height: 280px; background: #74C0FC; bottom: 5%; left: 10%; animation-delay: -5s; }
+    .blob4 { width: 200px; height: 200px; background: #D0BFFF; bottom: 20%; right: 15%; animation-delay: -1.5s; }
+    @keyframes float {
+      0%,100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-30px) scale(1.05); }
+    }
+
+    .hero-inner { position: relative; z-index: 1; }
+
+    .hero-emoji { font-size: 3.5rem; margin-bottom: 1rem; display: block; animation: popIn 0.8s cubic-bezier(.34,1.56,.64,1) 0.2s both; }
+    @keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--text-dark);
+      animation: slideUp 0.9s cubic-bezier(.22,1,.36,1) 0.4s both;
+    }
+    .hero-title span { color: var(--coral); font-style: italic; }
+
+    .hero-sub {
+      margin-top: 1.2rem;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--text-mid);
+      max-width: 480px;
+      line-height: 1.65;
+      animation: slideUp 0.9s cubic-bezier(.22,1,.36,1) 0.6s both;
+    }
+
+    .hero-btn {
+      margin-top: 2.5rem;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.9rem 2.2rem;
+      border-radius: 99px;
+      background: linear-gradient(135deg, var(--coral), var(--peach));
+      color: #fff;
+      font-size: 1rem; font-weight: 500;
+      text-decoration: none;
+      border: none; cursor: pointer;
+      box-shadow: 0 8px 30px rgba(255,107,107,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+      animation: slideUp 0.9s cubic-bezier(.22,1,.36,1) 0.8s both;
+    }
+    .hero-btn:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(255,107,107,0.45); }
+    .hero-btn .arrow { transition: transform 0.2s; }
+    .hero-btn:hover .arrow { transform: translateY(4px); }
+
+    @keyframes slideUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+
+    /* ── YEAR SECTIONS ───────────────────────────────────── */
+    .year-section {
+      padding: 5rem 2rem 6rem;
+      position: relative;
+    }
+    .year-section:nth-child(odd) { background: var(--warm-white); }
+    .year-section:nth-child(even) {
+      background: linear-gradient(180deg, #EAF4FF 0%, #F5EEFF 100%);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .section-year-badge {
+      display: inline-block;
+      font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--coral);
+      background: rgba(255,107,107,0.10);
+      padding: 0.35rem 1.1rem;
+      border-radius: 99px;
+      margin-bottom: 0.9rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    .section-count {
+      margin-top: 0.6rem;
+      font-size: 0.95rem; color: var(--text-mid);
+    }
+
+    /* ── GRID ────────────────────────────────────────────── */
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .media-card {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      background: #ddd;
+      aspect-ratio: 1;
+      box-shadow: var(--shadow);
+      transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s;
+      opacity: 0; transform: translateY(30px);
+      /* reveal via JS IntersectionObserver */
+    }
+    .media-card.visible {
+      animation: cardReveal 0.6s cubic-bezier(.22,1,.36,1) forwards;
+    }
+    @keyframes cardReveal {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .media-card:hover {
+      transform: scale(1.04) translateY(-4px);
+      box-shadow: 0 20px 60px rgba(100,60,30,0.20);
+      z-index: 2;
+    }
+
+    .media-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .media-card:hover img { transform: scale(1.08); }
+
+    /* video card */
+    .media-card.video-card video {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+    .video-overlay {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.18);
+      transition: background 0.3s;
+    }
+    .media-card:hover .video-overlay { background: rgba(0,0,0,0.05); }
+    .play-btn {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.92);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+      transition: transform 0.2s;
+    }
+    .media-card:hover .play-btn { transform: scale(1.1); }
+
+    /* card shimmer on broken media */
+    .media-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #f0e6df, #e8d5cc);
+      z-index: -1;
+    }
+
+    /* ── LIGHTBOX ────────────────────────────────────────── */
+    #lightbox {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(20,10,5,0.92);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.4s, visibility 0.4s;
+      padding: 1.5rem;
+    }
+    #lightbox.open { opacity: 1; visibility: visible; }
+
+    .lb-inner {
+      position: relative;
+      max-width: min(1000px, 96vw);
+      max-height: 90svh;
+      animation: lbPop 0.4s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes lbPop {
+      from { transform: scale(0.82); opacity: 0; }
+      to   { transform: scale(1);    opacity: 1; }
+    }
+
+    #lb-img {
+      max-width: 100%; max-height: 86svh;
+      border-radius: 14px;
+      box-shadow: 0 30px 100px rgba(0,0,0,0.6);
+      display: block;
+    }
+
+    #lb-video {
+      max-width: 100%; max-height: 86svh;
+      border-radius: 14px;
+      box-shadow: 0 30px 100px rgba(0,0,0,0.6);
+      display: none;
+      outline: none;
+    }
+
+    .lb-close {
+      position: fixed; top: 1.2rem; right: 1.5rem;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      border: none; cursor: pointer;
+      color: #fff; font-size: 1.4rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .lb-close:hover { background: rgba(255,107,107,0.6); transform: rotate(90deg); }
+
+    .lb-nav {
+      position: fixed; top: 50%; transform: translateY(-50%);
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.14);
+      border: none; cursor: pointer;
+      color: #fff; font-size: 1.5rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .lb-nav:hover { background: rgba(255,255,255,0.28); }
+    #lb-prev { left: 1rem; }
+    #lb-next { right: 1rem; }
+    #lb-prev:hover { transform: translateY(-50%) translateX(-3px); }
+    #lb-next:hover { transform: translateY(-50%) translateX(3px); }
+
+    .lb-counter {
+      position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,0.7); font-size: 0.85rem;
+      background: rgba(0,0,0,0.35); padding: 0.3rem 1rem; border-radius: 99px;
+    }
+
+    /* ── DIVIDER ─────────────────────────────────────────── */
+    .wave-divider {
+      display: block; width: 100%; height: 60px;
+      overflow: hidden; line-height: 0;
+    }
+    .wave-divider svg { width: 100%; height: 100%; }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    footer {
+      background: var(--text-dark);
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 2.5rem 2rem;
+      font-size: 0.95rem;
+    }
+    footer span { color: var(--coral); }
+
+    /* ── SCROLL HINT ─────────────────────────────────────── */
+    .scroll-hint {
+      margin-top: 3rem;
+      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+      animation: slideUp 0.9s cubic-bezier(.22,1,.36,1) 1s both;
+    }
+    .scroll-hint span { font-size: 0.78rem; color: var(--text-mid); letter-spacing: 0.1em; text-transform: uppercase; }
+    .scroll-dot {
+      width: 6px; height: 22px;
+      border: 2px solid var(--coral);
+      border-radius: 99px;
+      position: relative; overflow: hidden;
+    }
+    .scroll-dot::after {
+      content: ''; position: absolute;
+      top: 2px; left: 50%; transform: translateX(-50%);
+      width: 2px; height: 6px;
+      background: var(--coral); border-radius: 99px;
+      animation: scrollDot 1.5s ease-in-out infinite;
+    }
+    @keyframes scrollDot { 0%,100%{top:2px} 50%{top:10px} }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .media-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .nav-links a { padding: 0.4rem 0.6rem; font-size: 0.82rem; }
+      #lb-prev, #lb-next { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── LOADER ─────────────────────────────────────────── -->
+<div id="loader">
+  <div class="loader-icon">🌸</div>
+  <div class="loader-title">Our Memories</div>
+  <div class="quote-wrap" id="quoteWrap"></div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+</div>
+
+<!-- ── NAV ────────────────────────────────────────────── -->
+<nav id="navbar">
+  <a href="#home" class="nav-logo">Our Memories ✦</a>
+  <div class="nav-links">
+    <a href="#home">Home</a>
+    <a href="#y2023">2023</a>
+    <a href="#y2024">2024</a>
+    <a href="#y2025">2025</a>
+  </div>
+</nav>
+
+<!-- ── HERO ────────────────────────────────────────────── -->
+<section id="home">
+  <div class="hero-bg">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+    <div class="blob blob4"></div>
+  </div>
+  <div class="hero-inner">
+    <span class="hero-emoji">📸</span>
+    <h1 class="hero-title">Our<br><span>Memories</span></h1>
+    <p class="hero-sub">Every laugh, every late night, every moment we decided to make count — it's all right here.</p>
+    <a href="#y2023" class="hero-btn">
+      Browse the Gallery
+      <span class="arrow">↓</span>
+    </a>
+    <div class="scroll-hint">
+      <div class="scroll-dot"></div>
+      <span>scroll</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── 2023 ────────────────────────────────────────────── -->
+<section class="year-section" id="y2023">
+  <div class="section-header">
+    <div class="section-year-badge">Chapter One</div>
+    <h2 class="section-title">2023</h2>
+    <p class="section-count">3 photos</p>
+  </div>
+  <div class="media-grid" id="grid2023"></div>
+</section>
+
+<!-- ── 2024 ────────────────────────────────────────────── -->
+<section class="year-section" id="y2024">
+  <div class="section-header">
+    <div class="section-year-badge">Chapter Two</div>
+    <h2 class="section-title">2024</h2>
+    <p class="section-count">13 photos · 6 videos</p>
+  </div>
+  <div class="media-grid" id="grid2024"></div>
+</section>
+
+<!-- ── 2025 ────────────────────────────────────────────── -->
+<section class="year-section" id="y2025">
+  <div class="section-header">
+    <div class="section-year-badge">Chapter Three</div>
+    <h2 class="section-title">2025</h2>
+    <p class="section-count">10 photos · 3 videos</p>
+  </div>
+  <div class="media-grid" id="grid2025"></div>
+</section>
+
+<!-- ── FOOTER ──────────────────────────────────────────── -->
+<footer>
+  <p>Built for the memories that <span>never fade</span>. 💛</p>
+</footer>
+
+<!-- ── LIGHTBOX ────────────────────────────────────────── -->
+<div id="lightbox">
+  <div class="lb-inner">
+    <img id="lb-img" src="" alt="Memory" />
+    <video id="lb-video" controls playsinline></video>
+  </div>
+  <button class="lb-close" id="lb-close" title="Close">✕</button>
+  <button class="lb-nav" id="lb-prev" title="Previous">‹</button>
+  <button class="lb-nav" id="lb-next" title="Next">›</button>
+  <div class="lb-counter" id="lb-counter"></div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────
+const media = {
+  2023: {
+    images: ['media/242023.jpeg','media/252023.jpeg','media/262023.jpeg'],
+    videos: []
+  },
+  2024: {
+    images: ['media/102024.jpeg','media/122024.jpeg','media/132024.jpeg','media/142024.jpeg',
+             'media/152024.jpeg','media/162024.jpeg','media/172024.jpeg','media/182024.jpeg',
+             'media/192024.jpeg','media/202024.jpeg','media/212024.jpeg','media/222024.jpeg',
+             'media/232024.jpeg'],
+    videos: ['media/312024.mp4','media/322024.mp4','media/332024.mp4',
+             'media/342024.mp4','media/352024.mp4','media/362024.mp4']
+  },
+  2025: {
+    images: ['media/12025.jpeg','media/22025.jpeg','media/32025.jpeg','media/42025.jpeg',
+             'media/52025.jpeg','media/62025.jpeg','media/72025.jpeg','media/82025.jpeg',
+             'media/92025.jpeg','media/112025.jpeg'],
+    videos: ['media/272025.mp4','media/282025.mp4','media/292025.mp4']
+  }
+};
+
+// Flatten all items per year for lightbox navigation
+const allItems = {};
+[2023,2024,2025].forEach(y => {
+  allItems[y] = [
+    ...media[y].images.map(src => ({ src, type: 'image' })),
+    ...media[y].videos.map(src => ({ src, type: 'video' }))
+  ];
+});
+
+// ── LOADER ────────────────────────────────────────────
+const quotes = [
+  "Some friendships turn into family.",
+  "Memories fade. Legends stay.",
+  "Built different. Together.",
+  "The best nights leave no photographs.",
+  "Not all treasure is found — some is made.",
+  "You were there. That's enough."
+];
+
+const loader = document.getElementById('loader');
+const quoteWrap = document.getElementById('quoteWrap');
+
+// Build quote elements
+quotes.forEach((q, i) => {
+  const el = document.createElement('div');
+  el.className = 'loader-quote' + (i === 0 ? ' active' : '');
+  el.textContent = '"' + q + '"';
+  quoteWrap.appendChild(el);
+});
+
+let qi = 0;
+const quoteEls = quoteWrap.querySelectorAll('.loader-quote');
+const quoteInterval = setInterval(() => {
+  quoteEls[qi].classList.remove('active');
+  qi = (qi + 1) % quotes.length;
+  quoteEls[qi].classList.add('active');
+}, 1100);
+
+const showLoader = !sessionStorage.getItem('visited');
+if (showLoader) {
+  sessionStorage.setItem('visited', '1');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => {
+    clearInterval(quoteInterval);
+    loader.classList.add('hidden');
+    document.body.style.overflow = '';
+  }, 3400);
+} else {
+  loader.classList.add('hidden');
+}
+
+// ── BUILD GRIDS ───────────────────────────────────────
+function buildGrid(year) {
+  const grid = document.getElementById('grid' + year);
+  const items = allItems[year];
+
+  items.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'media-card' + (item.type === 'video' ? ' video-card' : '');
+    card.dataset.year = year;
+    card.dataset.idx = idx;
+
+    if (item.type === 'image') {
+      const img = document.createElement('img');
+      img.src = item.src;
+      img.alt = 'Memory ' + (idx + 1);
+      img.loading = 'lazy';
+      card.appendChild(img);
+    } else {
+      const vid = document.createElement('video');
+      vid.src = item.src;
+      vid.preload = 'metadata';
+      vid.muted = true;
+      vid.playsInline = true;
+      // show first frame
+      vid.addEventListener('loadedmetadata', () => { vid.currentTime = 0.5; });
+      card.appendChild(vid);
+
+      const ov = document.createElement('div');
+      ov.className = 'video-overlay';
+      ov.innerHTML = '<div class="play-btn">▶</div>';
+      card.appendChild(ov);
+    }
+
+    card.addEventListener('click', () => openLightbox(year, idx));
+    grid.appendChild(card);
+  });
+}
+
+[2023,2024,2025].forEach(buildGrid);
+
+// ── SCROLL REVEAL ─────────────────────────────────────
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      // stagger cards
+      const cards = [...e.target.parentElement.querySelectorAll('.media-card:not(.visible)')];
+      cards.forEach((c, ci) => {
+        setTimeout(() => c.classList.add('visible'), ci * 60);
+      });
+    }
+  });
+}, { threshold: 0.05 });
+
+document.querySelectorAll('.media-grid').forEach(g => revealObserver.observe(g));
+
+// ── NAVBAR SCROLL ─────────────────────────────────────
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', scrollY > 30);
+});
+
+// ── LIGHTBOX ──────────────────────────────────────────
+const lightbox = document.getElementById('lightbox');
+const lbImg    = document.getElementById('lb-img');
+const lbVideo  = document.getElementById('lb-video');
+const lbClose  = document.getElementById('lb-close');
+const lbPrev   = document.getElementById('lb-prev');
+const lbNext   = document.getElementById('lb-next');
+const lbCounter= document.getElementById('lb-counter');
+
+let curYear = null, curIdx = 0;
+
+function openLightbox(year, idx) {
+  curYear = year; curIdx = idx;
+  renderLightbox();
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+  lbVideo.pause();
+  lbVideo.src = '';
+  lbVideo.style.display = 'none';
+  lbImg.style.display = 'block';
+}
+
+function renderLightbox() {
+  const item = allItems[curYear][curIdx];
+  const total = allItems[curYear].length;
+  lbCounter.textContent = (curIdx + 1) + ' / ' + total;
+
+  if (item.type === 'image') {
+    lbVideo.pause(); lbVideo.style.display = 'none'; lbVideo.src = '';
+    lbImg.style.display = 'block';
+    lbImg.src = item.src;
+  } else {
+    lbImg.style.display = 'none';
+    lbVideo.style.display = 'block';
+    lbVideo.src = item.src;
+    lbVideo.load();
+    lbVideo.play().catch(() => {});
+  }
+}
+
+lbClose.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+
+lbPrev.addEventListener('click', () => {
+  curIdx = (curIdx - 1 + allItems[curYear].length) % allItems[curYear].length;
+  renderLightbox();
+});
+lbNext.addEventListener('click', () => {
+  curIdx = (curIdx + 1) % allItems[curYear].length;
+  renderLightbox();
+});
+
+document.addEventListener('keydown', e => {
+  if (!lightbox.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') lbPrev.click();
+  if (e.key === 'ArrowRight') lbNext.click();
+});
+
+// ── TOUCH SWIPE on lightbox ────────────────────────────
+let tsX = null;
+lightbox.addEventListener('touchstart', e => { tsX = e.touches[0].clientX; });
+lightbox.addEventListener('touchend', e => {
+  if (tsX === null) return;
+  const dx = e.changedTouches[0].clientX - tsX;
+  if (Math.abs(dx) > 50) dx < 0 ? lbNext.click() : lbPrev.click();
+  tsX = null;
+});
+</script>
+</body>
+</html>
